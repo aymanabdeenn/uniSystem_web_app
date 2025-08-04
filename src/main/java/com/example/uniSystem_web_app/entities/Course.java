@@ -40,11 +40,17 @@ public class Course {
     )
     private List<Student> students;
 
+    @Column(
+            nullable=false
+    )
+    private int capacity;
+
     public Course(){}
 
-    public Course(String courseId, String courseName) {
+    public Course(String courseId, String courseName , int capacity) {
         this.courseId = courseId;
         this.courseName = courseName;
+        this.capacity = capacity;
     }
 
     public Long getId() {
@@ -85,6 +91,14 @@ public class Course {
 
     public void setStudents(List<Student> students) {
         this.students = students;
+    }
+
+    public int getCapacity(){
+        return this.capacity;
+    }
+
+    public void setCapacity(int capacity){
+        this.capacity = capacity;
     }
 
     public int numOfStudents(){

@@ -34,6 +34,11 @@ public class Student {
     private String name;
     private LocalDate dob;
 
+    @Column(
+            nullable = false
+    )
+    private String faculty;
+
     @ManyToMany
     @JoinTable(
             name = "student_course",
@@ -44,10 +49,11 @@ public class Student {
 
     public Student(){}
 
-    public Student(String uniId, String name, LocalDate dob) {
+    public Student(String uniId, String name, LocalDate dob , String faculty) {
         this.uniId = uniId;
         this.name = name;
         this.dob = dob;
+        this.faculty = faculty;
     }
 
     public Long getId() {
@@ -80,6 +86,14 @@ public class Student {
 
     public void setDob(LocalDate dob) {
         this.dob = dob;
+    }
+
+    public String getFaculty() {
+        return faculty;
+    }
+
+    public void setFaculty(String faculty) {
+        this.faculty = faculty;
     }
 
     public List<Course> getCourses() {

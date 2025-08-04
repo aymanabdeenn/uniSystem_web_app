@@ -34,6 +34,11 @@ public class Doctor {
     private String name;
     private LocalDate dob;
 
+    @Column(
+            nullable=false
+    )
+    private String faculty;
+
     @OneToMany(
             mappedBy = "assignedDoctor",
             cascade = CascadeType.ALL
@@ -42,10 +47,11 @@ public class Doctor {
 
     public Doctor(){}
 
-    public Doctor(String uniId , String name , LocalDate dob){
+    public Doctor(String uniId , String name , LocalDate dob, String faculty){
         this.uniId = uniId;
         this.name = name;
         this.dob = dob;
+        this.faculty = faculty;
     }
 
     public Long getId() {
@@ -78,6 +84,14 @@ public class Doctor {
 
     public void setDob(LocalDate dob) {
         this.dob = dob;
+    }
+
+    public String getFaculty() {
+        return faculty;
+    }
+
+    public void setFaculty(String faculty) {
+        this.faculty = faculty;
     }
 
     public List<Course> getCourses() {
