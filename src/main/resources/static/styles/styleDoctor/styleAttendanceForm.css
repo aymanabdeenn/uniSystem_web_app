@@ -1,0 +1,222 @@
+:root {
+  --primary-color: #eaeffb;
+  --secondary-color: #182e65;
+  --tertiary-color: #2d5ed2;
+  --text-color: #333;
+  --abscense-color: #d64a31;
+  --attendance-color: #00ccff;
+  --submission-color: #ff6600;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--primary-color);
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text {
+  color: var(--primary-color);
+  font-size: 16px;
+  line-height: 1.5;
+  font-family: monospace;
+}
+
+/*SIDEBAR */
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background-color: var(--secondary-color);
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding: 20px;
+  border-radius: 0 10px 10px 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.nameCard {
+  padding: 20px;
+  border: 2px solid var(--primary-color);
+  border-radius: 5px;
+  background-color: var(--tertiary-color);
+}
+
+.doctorName {
+  display: inline-block;
+  color: var(--primary-color);
+  font-size: 24px;
+  font-weight: bold;
+  font-family: monospace;
+  margin-bottom: 10px;
+}
+
+.facultyName {
+  display: inline-block;
+  color: var(--primary-color);
+  font-size: 12px;
+  font-family: monospace;
+}
+
+.choices {
+}
+
+.choice {
+  display: block;
+  padding: 15px;
+  font-family: monospace;
+  font-size: 18px;
+
+  color: var(--primary-color);
+  text-decoration: none;
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.choice:hover {
+  background-color: var(--primary-color);
+  border-radius: 0 5px 5px 0;
+  color: var(--primary-color);
+  cursor: pointer;
+  transition: background-color 0.5s ease, color 0.5s ease;
+  background: linear-gradient(
+    to left,
+    var(--tertiary-color),
+    var(--secondary-color)
+  );
+  /* border-bottom: none; */
+}
+
+.logout {
+  display: block;
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+  /* padding: 10px; */
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: monospace;
+}
+
+.logoutButton {
+  border: none;
+  background-color: var(--secondary-color);
+  width: 100%;
+  height: 100%;
+  text-align: left;
+  border-radius: 10px;
+}
+
+.logoutButton:hover {
+  background: linear-gradient(
+    to left,
+    var(--tertiary-color),
+    var(--secondary-color)
+  );
+  color: var(--primary-color);
+  box-shadow: 15px 0 50px var(--primary-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: box-shadow 0.3s ease;
+  border-radius: 10px;
+}
+/* END OF SIDEBAR */
+/* CONTAINER */
+.container {
+  height: 100vh;
+  width: calc(100% - 250px);
+  margin-left: 250px; /* Adjusted to account for sidebar width */
+  padding: 20px;
+  background-color: var(--primary-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.studentsForm {
+  width: 75%;
+  height: 75%;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  background: linear-gradient(
+    to right,
+    var(--tertiary-color),
+    var(--secondary-color)
+  );
+}
+
+.form {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.formTitle {
+  color: var(--primary-color);
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  font-family: monospace;
+  padding: 25px;
+  border: 2px solid var(--primary-color);
+  border-radius: 10px;
+}
+
+select,
+input[type="date"] {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid var(--secondary-color);
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+  font-family: monospace;
+}
+
+.submitButton {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  color: var(--primary-color);
+  font-family: monospace;
+  font-size: 16px;
+  cursor: pointer;
+  background: linear-gradient(
+    to left,
+    var(--tertiary-color),
+    var(--secondary-color)
+  );
+  margin-top: 50px;
+}
+
+.submitButton:hover {
+  background: linear-gradient(
+    to left,
+    var(--secondary-color),
+    var(--tertiary-color)
+  );
+  color: var(--primary-color);
+  box-shadow: 15px 0 50px var(--primary-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: box-shadow 0.3s ease;
+  font-weight: bold;
+}
+
+/* END OF CONTAINER */

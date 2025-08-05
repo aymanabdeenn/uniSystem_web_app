@@ -6,15 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class AdminConfig {
 
     private final AccountCreationService acs;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AdminConfig(AccountCreationService acs){
+    public AdminConfig(AccountCreationService acs , PasswordEncoder passwordEncoder){
         this.acs = acs;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Bean

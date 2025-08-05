@@ -3,6 +3,7 @@ package com.example.uniSystem_web_app.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +34,9 @@ public class Student {
     )
     private String name;
     private LocalDate dob;
+
+    @Transient
+    private int age;
 
     @Column(
             nullable = false
@@ -88,6 +92,14 @@ public class Student {
         this.dob = dob;
     }
 
+    public int getAge() {
+        return Period.between(this.dob , LocalDate.now()).getYears();
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
     public String getFaculty() {
         return faculty;
     }
@@ -107,4 +119,5 @@ public class Student {
     public void addACourse(Course course){
         this.courses.add(course);
     }
+
 }

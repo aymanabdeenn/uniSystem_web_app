@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Doctor Page</title>
+    <link
+      rel="stylesheet"
+      th:href="@{/styles/styleDoctor/stylePersonalInformation.css}"
+    />
+  </head>
+  <body>
+  <div class="sidebar">
+    <div class="nameCard">
+      <p class="doctorName name">Dr.</p>
+      <p class="doctorName" th:text="${doctor.name}"></p>
+      <p class="facultyName">Faculty of</p>
+      <p class="facultyName" th:text="${doctor.faculty}"></p>
+    </div>
+    <div class="choices">
+      <a class="choice" th:href="@{/doctor/doctorUI}">Home</a>
+      <a class="choice" th:href="@{/doctor/personalInformation}"
+      >Personal Information</a
+      >
+      <a class="choice" th:href="@{/shared/showMyCourses}">My Courses</a>
+      <a class="choice" th:href="@{/doctor/attendanceForm}"
+      >Attendance</a
+      >
+    </div>
+    <form class="logout" method="POST" th:action="@{/logout}">
+      <button class="logoutButton choice">Logout</button>
+    </form>
+  </div>
+    <div class="container">
+      <div class="informationContainer">
+        <div class="informationCard">
+          <h2 class="infoCardTitle">Personal Information</h2>
+          <div class="info">
+            <div class="infoDiv">
+              <p class="text"><strong>Name:</strong></p>
+              <p class="text" th:text="${doctor.name}"></p>
+            </div>
+            <div class="infoDiv">
+              <p class="text"><strong>Email:</strong></p>
+              <p class="text" th:text="${doctorUsername}"></p>
+            </div>
+            <div class="infoDiv">
+              <p class="text"><strong>Date Of Birth:</strong></p>
+              <p class="text" th:text="${doctor.dob}"></p>
+            </div>
+            <div class="infoDiv">
+              <p class="text"><strong>Age:</strong></p>
+              <p class="text" th:text="${doctor.age}"></p>
+            </div>
+            <div class="infoDiv">
+              <p class="text"><strong>Number of assigned courses for the current semester: </strong></p>
+              <!--              <p class="text" th:text="${studentUsername}"></p>-->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script th:src="@{/scripts/scriptDoctor/scriptDoctorUI.js}"></script>
+  </body>
+</html>

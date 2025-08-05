@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Page</title>
+    <link
+      rel="stylesheet"
+      th:href="@{/styles/styleStudent/stylePersonalInformation.css}"
+    />
+  </head>
+  <body>
+  <div class="sidebar">
+    <div class="nameCard">
+      <p class="studentName name" th:text="${student.name}"></p>
+      <p class="facultyName">Faculty of </p>
+      <p class="facultyName" th:text="${student.faculty}"></p>
+    </div>
+    <div class="choices">
+      <a class="choice" th:href="@{/student/studentUI}">Home</a>
+      <a class="choice" th:href="@{/student/showPersonalInformation}"
+      >Personal Information</a
+      >
+      <a class="choice" th:href="@{/shared/showMyCourses}">My Courses</a>
+      <a class="choice" th:href="@{/student/showRegisterMenu}"
+      >Register</a
+      >
+    </div>
+    <form class="logout" method="POST" th:action="@{/logout}">
+      <button class="logoutButton choice">Logout</button>
+    </form>
+  </div>
+    <div class="container">
+      <div class="informationContainer">
+        <div class="informationCard">
+          <h2 class="infoCardTitle">Personal Information</h2>
+          <div class="info">
+            <div class="infoDiv">
+              <p class="text"><strong>Name:</strong></p>
+              <p class="text" th:text="${student.name}"></p>
+            </div>
+            <div class="infoDiv">
+              <p class="text"><strong>Email:</strong></p>
+              <p class="text" th:text="${studentUsername}"></p>
+            </div>
+            <div class="infoDiv">
+              <p class="text"><strong>Date Of Birth:</strong></p>
+              <p class="text" th:text="${student.dob}"></p>
+            </div>
+            <div class="infoDiv">
+              <p class="text"><strong>Age:</strong></p>
+              <p class="text" th:text="${student.age}"></p>
+            </div>
+            <div class="infoDiv">
+              <p class="text"><strong>Registered hours for the current semester: </strong></p>
+<!--              <p class="text" th:text="${studentUsername}"></p>-->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="/scripts/scriptStudent/scriptStudentUI.js"></script>
+  </body>
+</html>

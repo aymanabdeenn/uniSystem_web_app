@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Attendance</title>
+    <link rel="stylesheet" th:href="@{/styles/styleDoctor/styleAttendance.css}" />
+  </head>
+  <body>
+  <div class="sidebar">
+    <div class="nameCard">
+      <p class="doctorName name">Dr.</p>
+      <p class="doctorName" th:text="${doctor.name}"></p>
+      <p class="facultyName">Faculty of</p>
+      <p class="facultyName" th:text="${doctor.faculty}"></p>
+    </div>
+    <div class="choices">
+      <a class="choice" th:href="@{/doctor/doctorUI}">Home</a>
+      <a class="choice" th:href="@{/doctor/personalInformation}"
+      >Personal Information</a
+      >
+      <a class="choice" th:href="@{/shared/showMyCourses}">My Courses</a>
+      <a class="choice" th:href="@{/doctor/attendanceForm}"
+      >Attendance</a
+      >
+    </div>
+    <form class="logout" method="POST" th:action="@{/logout}">
+      <button class="logoutButton choice">Logout</button>
+    </form>
+  </div>
+    <div class="container">
+      <div class="attendanceComponents">
+        <form class="attendanceForm">
+          <div class="btns">
+            <div class="btn checkBtn" id="allAbsences">
+              <p class="text btnText">All Absent</p>
+              <input type="checkbox" id="allAbsences-checkbox" />
+            </div>
+            <div class="btn checkBtn" id="allAttendances">
+              <p class="text btnText">All Attendance</p>
+              <input type="checkbox" id="allAttendances-checkbox" />
+            </div>
+          </div>
+          <table class="attendanceTable">
+            <thead>
+              <tr>
+                <th class="text">#</th>
+                <th class="text">Student Number</th>
+                <th class="text">Student Name</th>
+                <th class="text">Absence</th>
+                <th class="text status">Attendance Status</th>
+              </tr>
+            </thead>
+            <tbody id="attendanceData">
+              <tr>
+                <td class="text">1</td>
+                <td class="text">1234567</td>
+                <td class="text">Student1</td>
+                <td class="text"><input class="checkbox" type="checkbox" /></td>
+                <td class="text">Present</td>
+              </tr>
+              <tr>
+                <td class="text">1</td>
+                <td class="text">1234567</td>
+                <td class="text">Student1</td>
+                <td class="text"><input class="checkbox" type="checkbox" /></td>
+                <td class="text">Present</td>
+              </tr>
+              <tr>
+                <td class="text">1</td>
+                <td class="text">1234567</td>
+                <td class="text">Student1</td>
+                <td class="text"><input class="checkbox" type="checkbox" /></td>
+                <td class="text">Present</td>
+              </tr>
+              <tr>
+                <td class="text">1</td>
+                <td class="text">1234567</td>
+                <td class="text">Student1</td>
+                <td class="text"><input class="checkbox" type="checkbox" /></td>
+                <td class="text">Present</td>
+              </tr>
+              <tr>
+                <td class="text">1</td>
+                <td class="text">1234567</td>
+                <td class="text">Student1</td>
+                <td class="text"><input class="checkbox" type="checkbox" /></td>
+                <td class="text">Present</td>
+              </tr>
+              <tr>
+                <td class="text">1</td>
+                <td class="text">1234567</td>
+                <td class="text">Student1</td>
+                <td class="text"><input class="checkbox" type="checkbox" /></td>
+                <td class="text">Present</td>
+              </tr>
+              <tr>
+                <td class="text">1</td>
+                <td class="text">1234567</td>
+                <td class="text">Student1</td>
+                <td class="text"><input class="checkbox" type="checkbox" /></td>
+                <td class="text">Present</td>
+              </tr>
+              <tr>
+                <td class="text">1</td>
+                <td class="text">1234567</td>
+                <td class="text">Student1</td>
+                <td class="text"><input class="checkbox" type="checkbox" /></td>
+                <td class="text">Present</td>
+              </tr>
+              <tr>
+                <td class="text">1</td>
+                <td class="text">1234567</td>
+                <td class="text">Student1</td>
+                <td class="text"><input class="checkbox" type="checkbox" /></td>
+                <td class="text">Present</td>
+              </tr>
+              <tr>
+                <td class="text">1</td>
+                <td class="text">1234567</td>
+                <td class="text">Student1</td>
+                <td class="text"><input class="checkbox" type="checkbox" /></td>
+                <td class="text">Present</td>
+              </tr>
+              <tr>
+                <td class="text">1</td>
+                <td class="text">1234567</td>
+                <td class="text">Student1</td>
+                <td class="text"><input class="checkbox" type="checkbox" /></td>
+                <td class="text">Present</td>
+              </tr>
+            </tbody>
+          </table>
+          <button class="submitButton btn" type="submit">
+            Submit Attendance
+          </button>
+        </form>
+      </div>
+    </div>
+    <script th:src="@{/scripts/scriptDoctor/scriptAttendance.js}"></script>
+  </body>
+</html>

@@ -125,4 +125,12 @@ public class Account {
     public void setDoctor(Doctor doctor) {
         this.doctor = doctor;
     }
+
+    public Admin getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Admin admin) {
+        this.admin = admin;
+    }
 }

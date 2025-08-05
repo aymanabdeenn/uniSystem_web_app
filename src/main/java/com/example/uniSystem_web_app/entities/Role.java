@@ -25,7 +25,7 @@ public class Role {
             unique = true,
             nullable = false
     )
-    String roleName;
+    String name;
 
     @ManyToMany(
             mappedBy="roles"
@@ -34,8 +34,8 @@ public class Role {
 
     public Role(){}
 
-    public Role(String roleName) {
-        this.roleName = roleName;
+    public Role(String name) {
+        this.name = name;
     }
 
     public Long getId() {
@@ -46,12 +46,12 @@ public class Role {
         this.id = id;
     }
 
-    public String getRoleName() {
-        return roleName;
+    public String getName() {
+        return name;
     }
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<Account> getAccounts() {
