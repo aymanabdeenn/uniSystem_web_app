@@ -4,22 +4,25 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Courses</title>
-    <link rel="stylesheet" th:href="@{/styles/styleStudent/styleMyCourses.css}" />
+    <link rel="stylesheet" th:href="@{/styles/styleShared/styleMyCourses.css}" />
   </head>
   <body>
   <div class="sidebar">
     <div class="nameCard">
-      <p class="doctorName name">Dr.Ayman Abdeen</p>
-      <p class="facultyName">Faculty of Computer Engineering</p>
+      <p class="name" th:if="${userType == 'doctor'}">Dr.</p>
+      <p class="name" th:text="${userType == 'student'} ? ${student.name} : ${doctor.name}"></p>
+      <br>
+      <p class="facultyName">Faculty of</p>
+      <p class="facultyName" th:text="${userType == 'student'} ? ${student.faculty} : ${doctor.faculty}"></p>
     </div>
     <div class="choices">
-      <a class="choice" th:href="@{/indices/doctor/doctorUI.html}">Home</a>
-      <a class="choice" th:href="@{/indices/doctor/personalInformation.html}"
+      <a class="choice" th:href="${userType == 'student'} ? @{/student/studentUI} : @{/doctor/doctorUI}">Home</a>
+      <a class="choice" th:href="${userType == 'student'} ? @{/student/showPersonalInformation} : @{/doctor/personalInformation}"
       >Personal Information</a
       >
-      <a class="choice" th:href="@{/indices/shared/myCourses.html}">My Courses</a>
-      <a class="choice" th:href="@{/indices/doctor/attendanceForm.html}"
-      >Attendance</a
+      <a class="choice" th:href="@{/shared/showMyCourses}">My Courses</a>
+      <a class="choice" th:href="${userType == 'student'} ? @{/student/showRegisterMenu} : @{/doctor/attendanceForm}"
+      th:text="${userType == 'student'} ? 'Register' : 'Attendance'"></a
       >
     </div>
     <form class="logout" method="POST" th:action="@{/logout}">
@@ -102,6 +105,6 @@
         </div>
       </div>
     </div>
-    <script th:src="@{/scripts/scriptStudent/scriptMyCourses.js}"></script>
+    <script th:src="@{/scripts/scriptShared/scriptMyCourses.js}"></script>
   </body>
 </html>

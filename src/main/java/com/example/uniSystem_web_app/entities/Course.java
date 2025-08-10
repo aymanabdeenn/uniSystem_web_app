@@ -2,6 +2,7 @@ package com.example.uniSystem_web_app.entities;
 
 import jakarta.persistence.*;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @Entity
@@ -15,8 +16,8 @@ public class Course {
             allocationSize = 1
     )
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "course-sequence"
+            strategy = GenerationType.IDENTITY
+//            generator = "course-sequence"
     )
     private Long id;
 
@@ -44,6 +45,14 @@ public class Course {
             nullable=false
     )
     private int capacity;
+
+    @Column(
+            nullable = false
+    )
+    private int takenSeats;
+
+    private LocalTime startTime;
+    private LocalTime endTime;
 
     public Course(){}
 
@@ -99,6 +108,30 @@ public class Course {
 
     public void setCapacity(int capacity){
         this.capacity = capacity;
+    }
+
+    public int getTakenSeats() {
+        return takenSeats;
+    }
+
+    public void setTakenSeats(int takenSeats) {
+        this.takenSeats = takenSeats;
+    }
+
+    public LocalTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
     }
 
     public int numOfStudents(){

@@ -15,18 +15,18 @@ public class SharedController {
 
     @GetMapping("/showMyCourses")
     public String myCourses(Model model){
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-//        boolean isStudent = authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_STUDENT"));
-//        boolean isDoctor = authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_DOCTOR"));
-//        if(isStudent){
-//            model.addAttribute("userType" , "student");
-//            model.addAttribute("student" , userDetails.getStudent());
-//        }
-//        else if(isDoctor){
-//            model.addAttribute("userType" , "doctor");
-//            model.addAttribute("doctor" , userDetails.getDoctor());
-//        }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        boolean isStudent = authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_STUDENT"));
+        boolean isDoctor = authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_DOCTOR"));
+        if(isStudent){
+            model.addAttribute("userType" , "student");
+            model.addAttribute("student" , userDetails.getStudent());
+        }
+        else if(isDoctor){
+            model.addAttribute("userType" , "doctor");
+            model.addAttribute("doctor" , userDetails.getDoctor());
+        }
         return "/indices/shared/myCourses";
     }
 
