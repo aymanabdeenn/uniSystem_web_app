@@ -153,6 +153,17 @@ body {
   width: 30%;
   height: 35%;
   min-width: 300px;
+  text-decoration: none;
+  color: var(--secondary-color);
+  transition: transform 0.2s ease-in-out;
+}
+
+.courseCard:hover{
+    transform: scale(1.05);
+}
+
+.courseName , .courseNumber{
+    display: inline-block;
 }
 
 .cardContent {

@@ -31,78 +31,17 @@
   </div>
     <div class="container">
       <div class="courseList">
-        <div class="courseCard">
+        <a class="courseCard" th:each="course : ${ (userType == 'student') ? student.courses : doctor.courses }" th:href="@{${courseHandlerPath}(id=${course.courseId})}">
           <div class="cardContent">
             <div class="courseBackground"></div>
             <div class="courseInfo">
-              <p class="courseName text">Course Name: Web Development</p>
-              <p class="courseCode text">Course Code: CS101</p>
+              <p class="courseName text">Course Name: </p>
+              <p class="courseName text" th:text="${course.courseName}"></p>
+              <p class="courseNumber text">Course Number: </p>
+              <p class="courseNumber text" th:text="${course.courseId}"></p>
             </div>
           </div>
-        </div>
-        <div class="courseCard">
-          <div class="cardContent">
-            <div class="courseBackground"></div>
-            <div class="courseInfo">
-              <p class="courseName text">Course Name: Web Development</p>
-              <p class="courseCode text">Course Code: CS101</p>
-            </div>
-          </div>
-        </div>
-        <div class="courseCard">
-          <div class="cardContent">
-            <div class="courseBackground"></div>
-            <div class="courseInfo">
-              <p class="courseName text">Course Name: Web Development</p>
-              <p class="courseCode text">Course Code: CS101</p>
-            </div>
-          </div>
-        </div>
-        <div class="courseCard">
-          <div class="cardContent">
-            <div class="courseBackground"></div>
-            <div class="courseInfo">
-              <p class="courseName text">Course Name: Web Development</p>
-              <p class="courseCode text">Course Code: CS101</p>
-            </div>
-          </div>
-        </div>
-        <div class="courseCard">
-          <div class="cardContent">
-            <div class="courseBackground"></div>
-            <div class="courseInfo">
-              <p class="courseName text">Course Name: Web Development</p>
-              <p class="courseCode text">Course Code: CS101</p>
-            </div>
-          </div>
-        </div>
-        <div class="courseCard">
-          <div class="cardContent">
-            <div class="courseBackground"></div>
-            <div class="courseInfo">
-              <p class="courseName text">Course Name: Web Development</p>
-              <p class="courseCode text">Course Code: CS101</p>
-            </div>
-          </div>
-        </div>
-        <div class="courseCard">
-          <div class="cardContent">
-            <div class="courseBackground"></div>
-            <div class="courseInfo">
-              <p class="courseName text">Course Name: Web Development</p>
-              <p class="courseCode text">Course Code: CS101</p>
-            </div>
-          </div>
-        </div>
-        <div class="courseCard">
-          <div class="cardContent">
-            <div class="courseBackground"></div>
-            <div class="courseInfo">
-              <p class="courseName text">Course Name: Web Development</p>
-              <p class="courseCode text">Course Code: CS101</p>
-            </div>
-          </div>
-        </div>
+        </a>
       </div>
     </div>
     <script th:src="@{/scripts/scriptShared/scriptMyCourses.js}"></script>

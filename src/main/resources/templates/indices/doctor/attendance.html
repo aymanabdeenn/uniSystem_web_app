@@ -30,7 +30,7 @@
   </div>
     <div class="container">
       <div class="attendanceComponents">
-        <form class="attendanceForm">
+        <form class="attendanceForm" method="POST" th:action="@{/doctor/takeAttendance}">
           <div class="btns">
             <div class="btn checkBtn" id="allAbsences">
               <p class="text btnText">All Absent</p>
@@ -52,83 +52,16 @@
               </tr>
             </thead>
             <tbody id="attendanceData">
-              <tr>
-                <td class="text">1</td>
-                <td class="text">1234567</td>
-                <td class="text">Student1</td>
-                <td class="text"><input class="checkbox" type="checkbox" /></td>
+              <tr th:each="student , stat: ${students}" th:object="${attendanceFormDTO}">
+                <td class="text" th:text="${student.id}"></td>
+                <td class="text" th:text="${student.uniId}">1234567</td>
+                <td class="text" th:text="${student.name}"></td>
+                <td class="text"><input class="checkbox" name="absent" type="checkbox" value="true" th:field="*{attendances[__${stat.index}__].absent}"/></td>
                 <td class="text">Present</td>
+                <input type="hidden" th:field="*{attendances[__${stat.index}__].studentId}" th:value="student.id"/>
               </tr>
-              <tr>
-                <td class="text">1</td>
-                <td class="text">1234567</td>
-                <td class="text">Student1</td>
-                <td class="text"><input class="checkbox" type="checkbox" /></td>
-                <td class="text">Present</td>
-              </tr>
-              <tr>
-                <td class="text">1</td>
-                <td class="text">1234567</td>
-                <td class="text">Student1</td>
-                <td class="text"><input class="checkbox" type="checkbox" /></td>
-                <td class="text">Present</td>
-              </tr>
-              <tr>
-                <td class="text">1</td>
-                <td class="text">1234567</td>
-                <td class="text">Student1</td>
-                <td class="text"><input class="checkbox" type="checkbox" /></td>
-                <td class="text">Present</td>
-              </tr>
-              <tr>
-                <td class="text">1</td>
-                <td class="text">1234567</td>
-                <td class="text">Student1</td>
-                <td class="text"><input class="checkbox" type="checkbox" /></td>
-                <td class="text">Present</td>
-              </tr>
-              <tr>
-                <td class="text">1</td>
-                <td class="text">1234567</td>
-                <td class="text">Student1</td>
-                <td class="text"><input class="checkbox" type="checkbox" /></td>
-                <td class="text">Present</td>
-              </tr>
-              <tr>
-                <td class="text">1</td>
-                <td class="text">1234567</td>
-                <td class="text">Student1</td>
-                <td class="text"><input class="checkbox" type="checkbox" /></td>
-                <td class="text">Present</td>
-              </tr>
-              <tr>
-                <td class="text">1</td>
-                <td class="text">1234567</td>
-                <td class="text">Student1</td>
-                <td class="text"><input class="checkbox" type="checkbox" /></td>
-                <td class="text">Present</td>
-              </tr>
-              <tr>
-                <td class="text">1</td>
-                <td class="text">1234567</td>
-                <td class="text">Student1</td>
-                <td class="text"><input class="checkbox" type="checkbox" /></td>
-                <td class="text">Present</td>
-              </tr>
-              <tr>
-                <td class="text">1</td>
-                <td class="text">1234567</td>
-                <td class="text">Student1</td>
-                <td class="text"><input class="checkbox" type="checkbox" /></td>
-                <td class="text">Present</td>
-              </tr>
-              <tr>
-                <td class="text">1</td>
-                <td class="text">1234567</td>
-                <td class="text">Student1</td>
-                <td class="text"><input class="checkbox" type="checkbox" /></td>
-                <td class="text">Present</td>
-              </tr>
+              <input type="hidden" name="courseId" th:value="${course.courseId}"/>
+              <input type="hidden" name="date" th:value="${date}"/>
             </tbody>
           </table>
           <button class="submitButton btn" type="submit">

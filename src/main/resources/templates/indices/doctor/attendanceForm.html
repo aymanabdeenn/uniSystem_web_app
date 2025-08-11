@@ -31,14 +31,11 @@
     <div class="container">
       <div class="studentsForm">
         <h1 class="formTitle">Attendance Form</h1>
-        <form class="form" method="post">
+        <form class="form" method="GET" th:action="@{/doctor/attendance}">
           <label class="text" for="course">Course:</label>
-          <select id="course" name="course">
-            <option value="course1">Course 1</option>
-            <option value="course2">Course 2</option>
-            <option value="course3">Course 3</option>
+          <select id="course" name="courseId">
+            <option th:each="course : ${doctor.courses}" th:value="${course.courseId}" th:text="${course.courseName}"></option>
           </select>
-
           <label class="text" for="date">Date:</label>
           <input type="date" id="date" name="date" required />
           <button type="submit" class="submitButton">Submit</button>

@@ -6,6 +6,7 @@ import com.example.uniSystem_web_app.exceptions.StudentNotFoundException;
 import com.example.uniSystem_web_app.repositories.CourseRepository;
 import com.example.uniSystem_web_app.repositories.StudentRepository;
 import com.example.uniSystem_web_app.security.CustomUserDetails;
+import com.example.uniSystem_web_app.services.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,11 +23,13 @@ import java.util.List;
 @RequestMapping("/student")
 public class StudentController {
 
+    private final CourseService courseService;
     private final StudentRepository studentRepository;
     private final CourseRepository courseRepository;
 
     @Autowired
-    public StudentController(CourseRepository courseRepository , StudentRepository studentRepository){
+    public StudentController(CourseService courseService, CourseRepository courseRepository , StudentRepository studentRepository){
+        this.courseService = courseService;
         this.studentRepository = studentRepository;
         this.courseRepository = courseRepository;
     }
@@ -67,7 +70,7 @@ public class StudentController {
     @GetMapping("/showRegisterMenu")
     public String registerMenu(Model model , @RequestParam(required = false) String success , @RequestParam(required = false) String notFound , @RequestParam(required = false) String fullCap , @RequestParam(required = false) String alreadyRegistered){
         Student student = getLoggedInStudent();
-        List<Course> courses = courseRepository.findAll();
+        List<Course> courses = courseService.getAllCourses();
         model.addAttribute("student" , student);
         model.addAttribute("courses" , courses);
         if(success != null) model.addAttribute("success" , success);
@@ -80,10 +83,10 @@ public class StudentController {
     @PostMapping("/registerCourse")
     public String registerCourse(Model model , @RequestParam String courseNumber){
         Student student = getLoggedInStudent();
-        List<Course> courses = courseRepository.findAll();
+        List<Course> courses = courseService.getAllCourses();
         model.addAttribute("student" , student);
         model.addAttribute("courses" , courses);
-        Course course = courseRepository.findByCourseId(courseNumber);
+        Course course = courseService.getCourseByCourseId(courseNumber);
         if(course == null) return "redirect:/student/showRegisterMenu?notFound";
         if(course.getTakenSeats() >= course.getCapacity()) return "redirect:/student/showRegisterMenu?fullCap";
         for(Course COURSE : student.getCourses()){
