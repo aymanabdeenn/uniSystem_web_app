@@ -49,6 +49,10 @@ public class DoctorController {
         return userDetails.getUsername();
     }
 
+    public boolean isFutureDate(LocalDate date){
+        return date.isAfter(LocalDate.now());
+    }
+
     @GetMapping("/doctorUI")
     public String doctorUI(Model model){
         Doctor doctor = getLoggedInDoctor();
@@ -65,25 +69,25 @@ public class DoctorController {
     }
 
     @GetMapping("attendanceForm")
-    public String showAttendanceForm(Model model){
+    public String showAttendanceForm(Model model , @RequestParam(required = false) String future){
         Doctor doctor = getLoggedInDoctor();
         model.addAttribute("doctor" , doctor);
+        if(future != null) model.addAttribute("future" , future);
         return "/indices/doctor/attendanceForm";
     }
 
     @GetMapping("/attendance")
     public String showStudents(Model model , @RequestParam String courseId , @RequestParam LocalDate date){
+        if(isFutureDate(date)) return "redirect:/doctor/attendanceForm?future";
+
         Doctor doctor = getLoggedInDoctor();
         Course course = courseService.getCourseByCourseId(courseId);
         List<Student> courseStudents = courseService.getCourseStudents(course);
 
-        AttendanceFormDTO attendanceFormDTO = new AttendanceFormDTO();
-        for(Student student : courseStudents){
-            StudentAttendanceDTO sa = new StudentAttendanceDTO();
-            sa.setStudentId(student.getId());
-            sa.setAbsent(false);
-            attendanceFormDTO.getAttendances().add(sa);
-        }
+        List<Attendance> attendance = attendanceService.doesRecordInDateExist(date);
+        AttendanceFormDTO attendanceFormDTO;
+        if(attendance.size() == 0)  attendanceFormDTO = attendanceService.fillDtoWithDefaultValues(courseStudents);
+        else attendanceFormDTO = attendanceService.fillDtoWithRecords(attendance);
 
         model.addAttribute("date" , date);
         model.addAttribute("course" , course);
@@ -96,12 +100,11 @@ public class DoctorController {
     @PostMapping("/takeAttendance")
     public String takeAttendance(@ModelAttribute AttendanceFormDTO attendanceFormDTO , @RequestParam String courseId , @RequestParam LocalDate date){
         List<StudentAttendanceDTO> students = attendanceFormDTO.getAttendances();
-        for(StudentAttendanceDTO studentDTO : students){
-            Attendance attendance = new Attendance(studentDTO.getStudentId() , courseId , date , studentDTO.getAbsent());
-            attendanceService.addAttendance(attendance);
-            System.out.println("--------------------------------------------");
-            System.out.println(attendance.getCourseId() + " " + attendance.getStudentId() + " " + attendance.getAbsent() + " " + attendance.getDate());
-        }
+        List<Attendance> attendance = attendanceService.doesRecordInDateExist(date);
+
+        if(attendance.size() == 0) attendanceService.addAttendanceList(attendanceFormDTO , courseId , date);
+        else attendanceService.modifyAttendanceList(attendanceFormDTO , attendance , courseId , date);
+
         return "redirect:/doctor/attendanceForm";
     }
 }

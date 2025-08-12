@@ -7,6 +7,15 @@
     <link rel="stylesheet" th:href="@{/styles/styleDoctor/styleAttendanceForm.css}" />
   </head>
   <body>
+  <div class="messageContainer" th:if="${future != null}">
+    <div class="message">
+      <div class="exitButton"><img draggable="false" th:src="@{/images/closeIcon.png}"/></div>
+      <h2 class="messageTitle text"
+      > Operation failed
+      </h2>
+      <div class="messageContent text" th:text="'Can not take attendance for the days in the future.'"></div>
+    </div>
+  </div>
   <div class="sidebar">
     <div class="nameCard">
       <p class="doctorName name">Dr.</p>
@@ -42,5 +51,6 @@
         </form>
       </div>
     </div>
+  <script th:src="@{/scripts/scriptDoctor/scriptAttendanceForm.js}"></script>
   </body>
 </html>

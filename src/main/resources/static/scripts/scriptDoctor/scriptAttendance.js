@@ -46,13 +46,21 @@ allStudentsCheckboxes.forEach((checkbox) => {
     if (!checkbox.checked) {
       // If the checkbox is checked, set status to "Present"
       checkbox.parentElement.nextElementSibling.textContent = "Present";
-      //   // checkbox.nextElementSibling.classList.add("present");
-      //   // checkbox.nextElementSibling.classList.remove("absent");
     } else {
       // If the checkbox is unchecked, set status to "Absent"
       checkbox.parentElement.nextElementSibling.textContent = "Absent";
-      //  // checkbox.nextElementSibling.classList.add("absent");
-      //  // checkbox.nextElementSibling.classList.remove("present");
     }
+
+//    const allChecked = Array.from(allStudentsCheckboxes).every(cb => cb.checked);
+//    const allNoneChecked = Array.from(allStudentsCheckboxes).every(cb => !cb.checked);
+//
+//    allAttendancesCheckbox.checked = allNoneChecked;
+//    allAbsencesCheckbox.checked = allChecked;
   });
+});
+
+// Set the status for each student based on their original absence status
+allStudentsCheckboxes.forEach((checkbox) => {
+    if(checkbox.checked) checkbox.parentElement.nextElementSibling.textContent = "Absent";
+    else checkbox.parentElement.nextElementSibling.textContent = "Present";
 });
