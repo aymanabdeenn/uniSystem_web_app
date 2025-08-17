@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLOutput;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 @Controller
@@ -53,6 +54,10 @@ public class DoctorController {
         return date.isAfter(LocalDate.now());
     }
 
+    public boolean isMoreThanAWeekPast(LocalDate date){
+        return Period.between(date , LocalDate.now()).getDays() > 7;
+    }
+
     @GetMapping("/doctorUI")
     public String doctorUI(Model model){
         Doctor doctor = getLoggedInDoctor();
@@ -69,18 +74,20 @@ public class DoctorController {
     }
 
     @GetMapping("attendanceForm")
-    public String showAttendanceForm(Model model , @RequestParam(required = false) String future){
+    public String showAttendanceForm(Model model , @RequestParam(required = false) String future , @RequestParam(required = false) String moreThanAWeekPast){
         Doctor doctor = getLoggedInDoctor();
         model.addAttribute("doctor" , doctor);
         if(future != null) model.addAttribute("future" , future);
+        if(moreThanAWeekPast != null) model.addAttribute("moreThanAWeekPast" , moreThanAWeekPast);
         return "/indices/doctor/attendanceForm";
     }
 
     @GetMapping("/attendance")
     public String showStudents(Model model , @RequestParam String courseId , @RequestParam LocalDate date){
         if(isFutureDate(date)) return "redirect:/doctor/attendanceForm?future";
-
+        if(isMoreThanAWeekPast(date)) return "redirect:/doctor/attendanceForm?moreThanAWeekPast";
         Doctor doctor = getLoggedInDoctor();
+
         Course course = courseService.getCourseByCourseId(courseId);
         List<Student> courseStudents = courseService.getCourseStudents(course);
 

@@ -232,9 +232,11 @@ body {
   justify-content: center;
   align-items: center;
   gap: 20px;
+  padding-bottom: 25px;
+  border-bottom: 2px solid var(--secondary-color);
 }
 
-#courseNumber {
+#courseCode {
   padding: 5px;
   border: 2px solid var(--secondary-color);
   border-radius: 5px;
@@ -258,6 +260,13 @@ body {
   color: var(--primary-color);
   transition: background-color 0.3s ease, color 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.recaptcha-and-error-container{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .courseTable {
@@ -286,6 +295,11 @@ body {
   background: var(--tertiary-color);
   color: var(--primary-color);
   transition: background 0.2s;
+}
+
+.courseTable tr:hover td,
+.courseTable tr:hover th {
+  color: var(--primary-color);
 }
 
 .courseTable tr:last-child td {

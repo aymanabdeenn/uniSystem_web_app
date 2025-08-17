@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Course Registration</title>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <link
       rel="stylesheet"
       th:href="@{/styles/styleStudent/styleCourseRegistration.css}"
@@ -42,15 +43,22 @@
     <div class="container">
       <div class="regComponents">
         <form class="registrationForm" method="POST" th:action="@{/student/registerCourse}">
-          <label class="text">Course Number:</label>
-          <input type="text" id="courseNumber" name="courseNumber" required />
+          <label class="text">Course Code:</label>
+          <input type="text" id="courseCode" name="courseCode" required />
+          <br>
+          <div class="recaptcha-and-error-container">
+            <div id="recaptcha-container"></div>
+            <div th:if="${notValidated != null}" id="recaptcha-error" style="color: red; margin-top: 5px;">
+              ⚠️ Please solve the reCAPTCHA before submitting.
+            </div>
+          </div>
           <button class="btn" type="submit">Register</button>
         </form>
         <table class="courseTable">
           <thead>
             <tr>
               <th class="text">Course Name</th>
-              <th class="text">Course Number</th>
+              <th class="text">Course Code</th>
               <th class="text">Time</th>
               <th class="text">Capacity</th>
               <th class="text">Occupied Seats</th>
@@ -59,7 +67,7 @@
           <tbody id="courseList">
                 <tr th:each="course : ${courses}" th:object="${course}">
                   <td class="courseName text" th:text="*{courseName}"></td>
-                  <td class="courseNum text" th:text="*{courseId}"></td>
+                  <td class="courseCode text" th:text="*{courseId}"></td>
                   <td class="courseTime text" th:text="*{startTime + ' - ' + endTime}"></td>
                   <td class="courseCapacity text" th:text="*{capacity}"></td>
                   <td class="courseOccupied text" th:text="*{takenSeats}"></td>
@@ -69,5 +77,6 @@
       </div>
     </div>
   <script th:src="@{/scripts/scriptStudent/scriptCourseRegistration.js}"></script>
+  <script src="https://www.google.com/recaptcha/api.js?onload=onLoadRecaptcha&render=explicit" async defer></script>
   </body>
 </html>

@@ -7,6 +7,7 @@ import com.example.uniSystem_web_app.repositories.CourseRepository;
 import com.example.uniSystem_web_app.repositories.StudentRepository;
 import com.example.uniSystem_web_app.security.CustomUserDetails;
 import com.example.uniSystem_web_app.services.CourseService;
+import com.example.uniSystem_web_app.services.RecaptchaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,12 +25,14 @@ import java.util.List;
 public class StudentController {
 
     private final CourseService courseService;
+    private final RecaptchaService recaptchaService;
     private final StudentRepository studentRepository;
     private final CourseRepository courseRepository;
 
     @Autowired
-    public StudentController(CourseService courseService, CourseRepository courseRepository , StudentRepository studentRepository){
+    public StudentController(CourseService courseService, RecaptchaService recaptchaService , CourseRepository courseRepository , StudentRepository studentRepository){
         this.courseService = courseService;
+        this.recaptchaService = recaptchaService;
         this.studentRepository = studentRepository;
         this.courseRepository = courseRepository;
     }
@@ -68,12 +71,13 @@ public class StudentController {
     }
 
     @GetMapping("/showRegisterMenu")
-    public String registerMenu(Model model , @RequestParam(required = false) String success , @RequestParam(required = false) String notFound , @RequestParam(required = false) String fullCap , @RequestParam(required = false) String alreadyRegistered){
+    public String registerMenu(Model model , @RequestParam(required = false) String success , @RequestParam(required = false) String notFound , @RequestParam(required = false) String fullCap , @RequestParam(required = false) String alreadyRegistered, @RequestParam(required = false) String sectionNotFound , @RequestParam(required = false) String notValidated){
         Student student = getLoggedInStudent();
         List<Course> courses = courseService.getAllCourses();
         model.addAttribute("student" , student);
         model.addAttribute("courses" , courses);
-        if(success != null) model.addAttribute("success" , success);
+        if(notValidated != null) model.addAttribute("notValidated" , notValidated);
+        else if(success != null) model.addAttribute("success" , success);
         else if(notFound != null) model.addAttribute("notFound" , notFound);
         else if(fullCap != null) model.addAttribute("fullCap" , fullCap);
         else if(alreadyRegistered != null) model.addAttribute("alreadyRegistered" , alreadyRegistered);
@@ -81,23 +85,28 @@ public class StudentController {
     }
 
     @PostMapping("/registerCourse")
-    public String registerCourse(Model model , @RequestParam String courseNumber){
+    public String registerCourse(Model model , @RequestParam String courseCode , @RequestParam("g-recaptcha-response") String recaptchaToken){
         Student student = getLoggedInStudent();
-        List<Course> courses = courseService.getAllCourses();
-        model.addAttribute("student" , student);
-        model.addAttribute("courses" , courses);
-        Course course = courseService.getCourseByCourseId(courseNumber);
-        if(course == null) return "redirect:/student/showRegisterMenu?notFound";
-        if(course.getTakenSeats() >= course.getCapacity()) return "redirect:/student/showRegisterMenu?fullCap";
-        for(Course COURSE : student.getCourses()){
-            if(COURSE.getId() == course.getId()) return "redirect:/student/showRegisterMenu?alreadyRegistered";
+        boolean isValid = recaptchaService.verifyToken(recaptchaToken);
+
+        if(isValid){
+            List<Course> courses = courseService.getAllCourses();
+            model.addAttribute("student" , student);
+            model.addAttribute("courses" , courses);
+            Course course = courseService.getCourseByCourseId(courseCode);
+            if(course == null) return "redirect:/student/showRegisterMenu?notFound";
+            if(course.getTakenSeats() >= course.getCapacity()) return "redirect:/student/showRegisterMenu?fullCap";
+            for(Course COURSE : student.getCourses()){
+                if(COURSE.getId() == course.getId()) return "redirect:/student/showRegisterMenu?alreadyRegistered";
+            }
+            synchronized (this){
+                course.setTakenSeats(course.getTakenSeats() + 1);
+                addCourse(student , course);
+                studentRepository.save(student);
+            }
+            return "redirect:/student/showRegisterMenu?success";
         }
-        synchronized (this){
-            course.setTakenSeats(course.getTakenSeats() + 1);
-            addCourse(student , course);
-            studentRepository.save(student);
-        }
-        return "redirect:/student/showRegisterMenu?success";
+        else return "redirect:/student/showRegisterMenu?notValidated";
     }
 
 }

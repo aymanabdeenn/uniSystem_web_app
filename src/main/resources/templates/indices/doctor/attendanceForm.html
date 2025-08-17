@@ -7,13 +7,13 @@
     <link rel="stylesheet" th:href="@{/styles/styleDoctor/styleAttendanceForm.css}" />
   </head>
   <body>
-  <div class="messageContainer" th:if="${future != null}">
+  <div class="messageContainer" th:if="${future != null || moreThanAWeekPast != null}">
     <div class="message">
       <div class="exitButton"><img draggable="false" th:src="@{/images/closeIcon.png}"/></div>
       <h2 class="messageTitle text"
       > Operation failed
       </h2>
-      <div class="messageContent text" th:text="'Can not take attendance for the days in the future.'"></div>
+      <div class="messageContent text" th:text="${future != null ? 'Can not take attendance for the days in the future.' : (moreThanAWeekPast != null ? 'Can not take/modify attendance for the days before the last week.' : '')}"></div>
     </div>
   </div>
   <div class="sidebar">
