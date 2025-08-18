@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Entity
@@ -47,7 +48,7 @@ public class Doctor {
             mappedBy = "assignedDoctor",
             cascade = CascadeType.ALL
     )
-    private List<Course> courses = new ArrayList<Course>();
+    private List<Section> sections = new ArrayList<Section>();
 
     public Doctor(){}
 
@@ -106,11 +107,21 @@ public class Doctor {
         this.faculty = faculty;
     }
 
-    public List<Course> getCourses() {
-        return courses;
+    public List<Section> getSections() {
+        return sections;
     }
 
-    public void setCourses(List<Course> courses) {
-        this.courses = courses;
+    public void setSections(List<Section> sections) {
+        this.sections = sections;
+    }
+
+    public List<Course> getCourses(){
+        List<Course> courses = new ArrayList<Course>();
+        HashSet<Course> set = new HashSet<Course>();
+        for(Section section : this.sections){
+            set.add(section.getCourse());
+            courses.add(section.getCourse());
+        }
+        return courses;
     }
 }

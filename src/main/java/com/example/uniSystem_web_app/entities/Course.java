@@ -2,7 +2,7 @@ package com.example.uniSystem_web_app.entities;
 
 import jakarta.persistence.*;
 
-import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -32,34 +32,17 @@ public class Course {
     )
     private String courseName;
 
-    @ManyToOne
-    @JoinColumn(name = "assigned_doctor_id")
-    private Doctor assignedDoctor;
-
-    @ManyToMany(
-            mappedBy = "courses"
+    @OneToMany(
+            mappedBy = "course",
+            cascade = CascadeType.ALL
     )
-    private List<Student> students;
-
-    @Column(
-            nullable=false
-    )
-    private int capacity;
-
-    @Column(
-            nullable = false
-    )
-    private int takenSeats;
-
-    private LocalTime startTime;
-    private LocalTime endTime;
+    private List<Section> sections = new ArrayList<>();
 
     public Course(){}
 
-    public Course(String courseId, String courseName , int capacity) {
+    public Course(String courseId, String courseName) {
         this.courseId = courseId;
         this.courseName = courseName;
-        this.capacity = capacity;
     }
 
     public Long getId() {
@@ -86,55 +69,11 @@ public class Course {
         this.courseName = courseName;
     }
 
-    public Doctor getAssignedDoctor() {
-        return assignedDoctor;
+    public List<Section> getSections() {
+        return sections;
     }
 
-    public void setAssignedDoctor(Doctor assignedDoctor) {
-        this.assignedDoctor = assignedDoctor;
-    }
-
-    public List<Student> getStudents() {
-        return students;
-    }
-
-    public void setStudents(List<Student> students) {
-        this.students = students;
-    }
-
-    public int getCapacity(){
-        return this.capacity;
-    }
-
-    public void setCapacity(int capacity){
-        this.capacity = capacity;
-    }
-
-    public int getTakenSeats() {
-        return takenSeats;
-    }
-
-    public void setTakenSeats(int takenSeats) {
-        this.takenSeats = takenSeats;
-    }
-
-    public LocalTime getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(LocalTime startTime) {
-        this.startTime = startTime;
-    }
-
-    public LocalTime getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(LocalTime endTime) {
-        this.endTime = endTime;
-    }
-
-    public int numOfStudents(){
-        return this.students.size();
+    public void setSections(List<Section> sections) {
+        this.sections = sections;
     }
 }

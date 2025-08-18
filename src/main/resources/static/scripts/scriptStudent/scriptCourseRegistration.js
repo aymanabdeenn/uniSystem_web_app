@@ -1,11 +1,23 @@
 'use strict';
 
-const exitBtn = document.querySelector(".exitButton");
-const messageContainer = document.querySelector(".messageContainer");
+document.addEventListener("DOMContentLoaded", () => {
+  const exitBtn = document.querySelector(".exitButton");
+  const messageContainer = document.querySelector(".container1");
+  const backBtn = document.querySelector(".backBtn");
+  const sectionsContainer = document.querySelector(".container2");
 
+  if (exitBtn && messageContainer) {
+    exitBtn.addEventListener("click", () => {
+      messageContainer.classList.add("hidden");
+    });
+  }
 
-exitBtn.addEventListener("click" , function(){
-    messageContainer.classList.add('hidden');
+  if (backBtn && sectionsContainer) {
+    backBtn.addEventListener("click", () => {
+      sectionsContainer.classList.add("hidden");
+      document.querySelector(".container").classList.remove("hidden"); // if you want to re-show course list
+    });
+  }
 });
 
 function onRecaptchaSuccess(token){

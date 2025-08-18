@@ -2,15 +2,13 @@ package com.example.uniSystem_web_app.controllers;
 
 import com.example.uniSystem_web_app.dto.AttendanceFormDTO;
 import com.example.uniSystem_web_app.dto.StudentAttendanceDTO;
-import com.example.uniSystem_web_app.entities.Attendance;
-import com.example.uniSystem_web_app.entities.Course;
-import com.example.uniSystem_web_app.entities.Doctor;
-import com.example.uniSystem_web_app.entities.Student;
+import com.example.uniSystem_web_app.entities.*;
 import com.example.uniSystem_web_app.exceptions.DoctorNotFoundException;
 import com.example.uniSystem_web_app.repositories.DoctorRepository;
 import com.example.uniSystem_web_app.security.CustomUserDetails;
 import com.example.uniSystem_web_app.services.AttendanceService;
 import com.example.uniSystem_web_app.services.CourseService;
+import com.example.uniSystem_web_app.services.SectionService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,11 +26,13 @@ import java.util.List;
 public class DoctorController {
 
     private final CourseService courseService;
+    private final SectionService sectionService;
     private final AttendanceService attendanceService;
     private final DoctorRepository doctorRepository;
 
-    public DoctorController(CourseService courseService , AttendanceService attendanceService , DoctorRepository doctorRepository){
+    public DoctorController(CourseService courseService , SectionService sectionService , AttendanceService attendanceService , DoctorRepository doctorRepository){
         this.courseService = courseService;
+        this.sectionService = sectionService;
         this.attendanceService = attendanceService;
         this.doctorRepository = doctorRepository;
     }
@@ -73,43 +73,65 @@ public class DoctorController {
         return "/indices/doctor/personalInformation";
     }
 
-    @GetMapping("attendanceForm")
-    public String showAttendanceForm(Model model , @RequestParam(required = false) String future , @RequestParam(required = false) String moreThanAWeekPast){
+    @GetMapping("/attendanceForm")
+    public String showAttendanceForm(
+            Model model,
+            @RequestParam(required = false) boolean showSections,
+            @RequestParam(required = false) String courseId,
+            @RequestParam(required = false) String future,
+            @RequestParam(required = false) String moreThanAWeekPast) {
+
         Doctor doctor = getLoggedInDoctor();
-        model.addAttribute("doctor" , doctor);
-        if(future != null) model.addAttribute("future" , future);
-        if(moreThanAWeekPast != null) model.addAttribute("moreThanAWeekPast" , moreThanAWeekPast);
+        model.addAttribute("doctor", doctor);
+
+        if (showSections && courseId != null) {
+            Course course = courseService.getCourseByCourseId(courseId);
+            model.addAttribute("courseId" , courseId);
+            model.addAttribute("sections", course.getSections());
+        }
+
+        if (future != null) model.addAttribute("future", future);
+        if (moreThanAWeekPast != null) model.addAttribute("moreThanAWeekPast", moreThanAWeekPast);
+
+        model.addAttribute("courses", doctor.getCourses());
         return "/indices/doctor/attendanceForm";
     }
 
+    @GetMapping("/showSections")
+    public String showSections(Model model , @RequestParam String courseId){
+        return "redirect:/doctor/attendanceForm?showSections=true&courseId=" + courseId;
+    }
+
     @GetMapping("/attendance")
-    public String showStudents(Model model , @RequestParam String courseId , @RequestParam LocalDate date){
+    public String showStudents(Model model , @RequestParam String courseId , @RequestParam(required = false) Long sectionId , @RequestParam LocalDate date){
         if(isFutureDate(date)) return "redirect:/doctor/attendanceForm?future";
         if(isMoreThanAWeekPast(date)) return "redirect:/doctor/attendanceForm?moreThanAWeekPast";
         Doctor doctor = getLoggedInDoctor();
 
         Course course = courseService.getCourseByCourseId(courseId);
-        List<Student> courseStudents = courseService.getCourseStudents(course);
+        Section section = sectionService.getSectionBySectionId(sectionId);
+        List<Student> sectionStudents = sectionService.getSectionStudents(section);
 
         List<Attendance> attendance = attendanceService.doesRecordInDateExist(date);
         AttendanceFormDTO attendanceFormDTO;
-        if(attendance.size() == 0)  attendanceFormDTO = attendanceService.fillDtoWithDefaultValues(courseStudents);
+        if(attendance.size() == 0)  attendanceFormDTO = attendanceService.fillDtoWithDefaultValues(sectionStudents);
         else attendanceFormDTO = attendanceService.fillDtoWithRecords(attendance);
 
         model.addAttribute("date" , date);
         model.addAttribute("course" , course);
+        model.addAttribute("section" , section);
         model.addAttribute("doctor" , doctor);
-        model.addAttribute("students" , courseStudents);
+        model.addAttribute("students" , sectionStudents);
         model.addAttribute("attendanceFormDTO" , attendanceFormDTO);
         return "/indices/doctor/attendance";
     }
 
     @PostMapping("/takeAttendance")
-    public String takeAttendance(@ModelAttribute AttendanceFormDTO attendanceFormDTO , @RequestParam String courseId , @RequestParam LocalDate date){
+    public String takeAttendance(@ModelAttribute AttendanceFormDTO attendanceFormDTO , @RequestParam String courseId , @RequestParam int sectionNumber , @RequestParam LocalDate date){
         List<StudentAttendanceDTO> students = attendanceFormDTO.getAttendances();
         List<Attendance> attendance = attendanceService.doesRecordInDateExist(date);
 
-        if(attendance.size() == 0) attendanceService.addAttendanceList(attendanceFormDTO , courseId , date);
+        if(attendance.size() == 0) attendanceService.addAttendanceList(attendanceFormDTO , courseId , sectionNumber , date);
         else attendanceService.modifyAttendanceList(attendanceFormDTO , attendance , courseId , date);
 
         return "redirect:/doctor/attendanceForm";

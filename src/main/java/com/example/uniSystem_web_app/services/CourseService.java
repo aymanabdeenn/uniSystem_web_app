@@ -1,6 +1,7 @@
 package com.example.uniSystem_web_app.services;
 
 import com.example.uniSystem_web_app.entities.Course;
+import com.example.uniSystem_web_app.entities.Section;
 import com.example.uniSystem_web_app.entities.Student;
 import com.example.uniSystem_web_app.repositories.CourseRepository;
 import org.springframework.stereotype.Service;
@@ -24,8 +25,8 @@ public class CourseService {
         return courseRepository.findByCourseId(courseId);
     }
 
-    public List<Student> getCourseStudents(Course course){
-        return course.getStudents();
+    public List<Section> getAllSections(Course course){
+        return course.getSections();
     }
 
 }

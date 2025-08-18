@@ -45,11 +45,11 @@ public class Student {
 
     @ManyToMany
     @JoinTable(
-            name = "student_course",
+            name = "student_section",
             joinColumns = @JoinColumn(name = "student_id"),
-            inverseJoinColumns = @JoinColumn(name = "course_id")
+            inverseJoinColumns = @JoinColumn(name = "section_id")
     )
-    private List<Course> courses = new ArrayList<Course>();
+    private List<Section> sections = new ArrayList<Section>();
 
     public Student(){}
 
@@ -108,16 +108,16 @@ public class Student {
         this.faculty = faculty;
     }
 
-    public List<Course> getCourses() {
-        return courses;
+    public List<Section> getSections() {
+        return sections;
     }
 
-    public void setCourses(List<Course> courses) {
-        this.courses = courses;
+    public void setSections(List<Section> sections) {
+        this.sections = sections;
     }
 
-    public void addACourse(Course course){
-        this.courses.add(course);
+    public void addASection(Section section){
+        this.sections.add(section);
     }
 
 }

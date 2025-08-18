@@ -64,9 +64,9 @@ public class AttendanceService {
         attendanceRepository.save(attendant);
     }
 
-    public void addAttendanceList(AttendanceFormDTO attendanceFormDTO , String courseId , LocalDate date){
+    public void addAttendanceList(AttendanceFormDTO attendanceFormDTO , String courseId , int sectionNumber , LocalDate date){
         for(StudentAttendanceDTO sa : attendanceFormDTO.getAttendances()){
-            Attendance attendant = new Attendance(sa.getStudentId() , courseId , date , sa.getAbsent());
+            Attendance attendant = new Attendance(sa.getStudentId() , courseId , sectionNumber , date , sa.getAbsent());
             addAttendance(attendant);
             System.out.println("----------------------ADD----------------------");
             System.out.println(attendant.getCourseId() + " " + attendant.getStudentId() + " " + attendant.getAbsent() + " " + attendant.getDate());

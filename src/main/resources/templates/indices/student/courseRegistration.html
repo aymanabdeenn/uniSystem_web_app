@@ -11,7 +11,7 @@
     />
   </head>
   <body>
-  <div class="messageContainer" th:if="${success != null|| notFound != null || fullCap != null || alreadyRegistered != null}">
+  <div class=" container1 messageContainer" th:if="${success != null|| notFound != null || fullCap != null || alreadyRegistered != null}">
     <div class="message">
       <div class="exitButton"><img draggable="false" th:src="@{/images/closeIcon.png}"/></div>
       <h2 class="messageTitle text" th:text="${success != null ? 'Operation succeeded' : (notFound != null || fullCap != null || alreadyRegistered != null ? 'Operation failed' : '')}"
@@ -19,6 +19,30 @@
       </h2>
       <div class="messageContent text" th:text="${success != null ? 'The course has been registered successfully.' : (notFound != null ? 'This course was not found.' : (fullCap != null  ? 'This course is at its maximum capacity.' : 'You already registered this course.'))}"></div>
     </div>
+  </div>
+  <div class="container2 messageContainer" th:if="${sections != null}">
+    <div class="sectionsMessage">
+      <div class="backBtn btn"><img draggable="false" th:src="@{/images/goBackIcon.png}"/></div>
+      <table class="courseTable sectionsTable">
+        <thead>
+        <tr>
+          <th class="text">Section Number</th>
+          <th class="text">Time</th>
+          <th class="text">Capacity</th>
+          <th class="text">Occupied Seats</th>
+        </tr>
+        </thead>
+        <tbody id="sectionsList">
+        <tr th:each="section : ${sections}" th:object="${section}">
+          <td class="courseNumber text" th:text="*{sectionNumber}"></td>
+          <td class="sectionTime text" th:text="*{startTime + ' - ' + endTime}"></td>
+          <td class="sectionCapacity text" th:text="*{capacity}"></td>
+          <td class="sectionOccupied text" th:text="*{takenSeats}"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
   </div>
   <div class="sidebar">
     <div class="nameCard">
@@ -45,7 +69,8 @@
         <form class="registrationForm" method="POST" th:action="@{/student/registerCourse}">
           <label class="text">Course Code:</label>
           <input type="text" id="courseCode" name="courseCode" required />
-          <br>
+          <label class="text">Section Number:</label>
+          <input type="text" id="sectionNumber" name="sectionNumber" required />
           <div class="recaptcha-and-error-container">
             <div id="recaptcha-container"></div>
             <div th:if="${notValidated != null}" id="recaptcha-error" style="color: red; margin-top: 5px;">
@@ -59,18 +84,17 @@
             <tr>
               <th class="text">Course Name</th>
               <th class="text">Course Code</th>
-              <th class="text">Time</th>
-              <th class="text">Capacity</th>
-              <th class="text">Occupied Seats</th>
+              <th class="text">Available Sections</th>
             </tr>
           </thead>
           <tbody id="courseList">
                 <tr th:each="course : ${courses}" th:object="${course}">
                   <td class="courseName text" th:text="*{courseName}"></td>
                   <td class="courseCode text" th:text="*{courseId}"></td>
-                  <td class="courseTime text" th:text="*{startTime + ' - ' + endTime}"></td>
-                  <td class="courseCapacity text" th:text="*{capacity}"></td>
-                  <td class="courseOccupied text" th:text="*{takenSeats}"></td>
+                  <td class="sections"><form method="GET" th:action="@{/student/availableSections}"><input type="hidden" name="courseId" th:value="*{courseId}"/><button type="submit" class="showSectionsBtn btn">Available Sections</button></form></td>
+<!--                  <td class="courseTime text" th:text="*{startTime + ' - ' + endTime}"></td>-->
+<!--                  <td class="courseCapacity text" th:text="*{capacity}"></td>-->
+<!--                  <td class="courseOccupied text" th:text="*{takenSeats}"></td>-->
                 </tr>
           </tbody>
         </table>

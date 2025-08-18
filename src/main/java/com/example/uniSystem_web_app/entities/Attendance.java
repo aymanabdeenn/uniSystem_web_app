@@ -21,14 +21,16 @@ public class Attendance {
 
     private Long studentId;
     private String courseId;
+    private int sectionNumber;
     private LocalDate date;
     private boolean absent;
 
     public Attendance(){}
 
-    public Attendance(Long studentId , String courseId , LocalDate date , boolean absent){
+    public Attendance(Long studentId , String courseId , int sectionNumber, LocalDate date , boolean absent){
         this.studentId = studentId;
         this.courseId = courseId;
+        this.sectionNumber = sectionNumber;
         this.date = date;
         this.absent = absent;
     }
@@ -57,6 +59,14 @@ public class Attendance {
         this.courseId = courseId;
     }
 
+    public int getSectionNumber() {
+        return sectionNumber;
+    }
+
+    public void setSectionNumber(int sectionNumber) {
+        this.sectionNumber = sectionNumber;
+    }
+
     public LocalDate getDate() {
         return date;
     }
@@ -72,4 +82,5 @@ public class Attendance {
     public void setAbsent(boolean absent) {
         this.absent = absent;
     }
+
 }

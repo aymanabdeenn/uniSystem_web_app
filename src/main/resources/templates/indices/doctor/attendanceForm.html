@@ -40,13 +40,21 @@
     <div class="container">
       <div class="studentsForm">
         <h1 class="formTitle">Attendance Form</h1>
-        <form class="form" method="GET" th:action="@{/doctor/attendance}">
+        <form class="form"  method="GET" th:action="@{/doctor/showSections}">
           <label class="text" for="course">Course:</label>
           <select id="course" name="courseId">
-            <option th:each="course : ${doctor.courses}" th:value="${course.courseId}" th:text="${course.courseName}"></option>
+            <option th:each="course : ${courses}" th:value="${course.courseId}" th:text="${course.courseName}"></option>
+          </select>
+          <button type="submit" class="submitButton">Show Sections</button>
+        </form>
+        <form th:if="${sections != null}" class="form" method="GET" th:action="@{/doctor/attendance}">
+          <label class="text" for="course">Course:</label>
+          <select id="section" name="sectionId">
+            <option th:each="section : ${sections}" th:value="${section.id}" th:text="${section.sectionNumber}"></option>
           </select>
           <label class="text" for="date">Date:</label>
           <input type="date" id="date" name="date" required />
+          <input type="hidden" id="courseId" name="courseId" th:value="${courseId}"/>
           <button type="submit" class="submitButton">Submit</button>
         </form>
       </div>
