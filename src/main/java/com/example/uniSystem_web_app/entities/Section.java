@@ -15,7 +15,7 @@ public class Section {
     )
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private int sectionNumber;
 
     @ManyToOne

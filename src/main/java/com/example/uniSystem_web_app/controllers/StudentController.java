@@ -78,7 +78,7 @@ public class StudentController {
     }
 
     @GetMapping("/showRegisterMenu")
-    public String registerMenu(Model model , @RequestParam(required = false) String courseId , @RequestParam(required = false) String success , @RequestParam(required = false) String notFound , @RequestParam(required = false) String fullCap , @RequestParam(required = false) String alreadyRegistered, @RequestParam(required = false) String sectionNotFound , @RequestParam(required = false) String notValidated){
+    public String registerMenu(Model model , @RequestParam(required = false) String courseId , @RequestParam(required = false) String success , @RequestParam(required = false) String notFound , @RequestParam(required = false) String fullCap , @RequestParam(required = false) String alreadyRegistered, @RequestParam(required = false) String sectionNotFound , @RequestParam(required = false) String alreadyHasSectionWithinCourse, @RequestParam(required = false) String notValidated){
         Student student = getLoggedInStudent();
         List<Course> courses = courseService.getAllCourses();
         model.addAttribute("student" , student);
@@ -88,6 +88,7 @@ public class StudentController {
         else if(notFound != null) model.addAttribute("notFound" , notFound);
         else if(fullCap != null) model.addAttribute("fullCap" , fullCap);
         else if(sectionNotFound != null) model.addAttribute("sectionNotFound" , sectionNotFound);
+        else if(alreadyHasSectionWithinCourse != null) model.addAttribute("alreadyHasSectionWithinCourse" , alreadyHasSectionWithinCourse);
         else if(alreadyRegistered != null) model.addAttribute("alreadyRegistered" , alreadyRegistered);
         if(courseId != null) {
             Course course = courseService.getCourseByCourseId(courseId);
@@ -115,6 +116,7 @@ public class StudentController {
 
             Section section = sectionService.getCertainSectionFromACourseWithNumber(course , sectionNumber);
             if(section == null) return "redirect:/student/showRegisterMenu?sectionNotFound";
+            if(student.hasSectionWithSameCourse(section)) return "redirect:/student/showRegisterMenu?alreadyHasSectionWithinCourse";
             if(section.getTakenSeats() >= section.getCapacity()) return "redirect:/student/showRegisterMenu?fullCap";
             if(studentService.doesStudentHasASection(student , section.getId())) return "redirect:/student/showRegisterMenu?alreadyRegistered";
             synchronized (this){

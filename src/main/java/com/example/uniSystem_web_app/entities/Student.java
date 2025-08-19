@@ -131,4 +131,10 @@ public class Student {
         return courses;
     }
 
+    public boolean hasSectionWithSameCourse(Section section){
+        for(Section SECTION : this.sections){
+            if(SECTION.getCourse() == section.getCourse()) return true;
+        }
+        return false;
+    }
 }
