@@ -11,13 +11,13 @@
     />
   </head>
   <body>
-  <div class=" container1 messageContainer" th:if="${success != null|| notFound != null || fullCap != null || alreadyRegistered != null}">
+  <div class=" container1 messageContainer" th:if="${success != null|| notFound != null || fullCap != null || alreadyRegistered != null || sectionNotFound != null}">
     <div class="message">
       <div class="exitButton"><img draggable="false" th:src="@{/images/closeIcon.png}"/></div>
-      <h2 class="messageTitle text" th:text="${success != null ? 'Operation succeeded' : (notFound != null || fullCap != null || alreadyRegistered != null ? 'Operation failed' : '')}"
+      <h2 class="messageTitle text" th:text="${success != null ? 'Operation succeeded' : (notFound != null || fullCap != null || alreadyRegistered != null || sectionNotFound != null ? 'Operation failed' : '')}"
       >
       </h2>
-      <div class="messageContent text" th:text="${success != null ? 'The course has been registered successfully.' : (notFound != null ? 'This course was not found.' : (fullCap != null  ? 'This course is at its maximum capacity.' : 'You already registered this course.'))}"></div>
+      <div class="messageContent text" th:text="${success != null ? 'The course has been registered successfully.' : (notFound != null ? 'This course was not found.' : (sectionNotFound != null ? 'This section was not found.' : (fullCap != null  ? 'This section is at its maximum capacity.' : 'You already registered this course.')))}"></div>
     </div>
   </div>
   <div class="container2 messageContainer" th:if="${sections != null}">
@@ -92,9 +92,6 @@
                   <td class="courseName text" th:text="*{courseName}"></td>
                   <td class="courseCode text" th:text="*{courseId}"></td>
                   <td class="sections"><form method="GET" th:action="@{/student/availableSections}"><input type="hidden" name="courseId" th:value="*{courseId}"/><button type="submit" class="showSectionsBtn btn">Available Sections</button></form></td>
-<!--                  <td class="courseTime text" th:text="*{startTime + ' - ' + endTime}"></td>-->
-<!--                  <td class="courseCapacity text" th:text="*{capacity}"></td>-->
-<!--                  <td class="courseOccupied text" th:text="*{takenSeats}"></td>-->
                 </tr>
           </tbody>
         </table>

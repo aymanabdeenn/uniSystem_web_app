@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Entity
@@ -118,6 +119,16 @@ public class Student {
 
     public void addASection(Section section){
         this.sections.add(section);
+    }
+
+    public List<Course> getCourses(){
+        List<Course> courses = new ArrayList<Course>();
+        HashSet<Course> set = new HashSet<Course>();
+        for(Section section : this.sections){
+            set.add(section.getCourse());
+            courses.add(section.getCourse());
+        }
+        return courses;
     }
 
 }
