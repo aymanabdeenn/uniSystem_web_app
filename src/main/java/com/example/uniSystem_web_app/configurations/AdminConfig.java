@@ -24,7 +24,7 @@ public class AdminConfig {
     CommandLineRunner commandLineRunnerAdmins(){
         return args -> {
             Admin admin1 = new Admin("admin1");
-            acs.registerAdmin("adm1" , "123" , admin1);
+            acs.registerAdmin("adm1" , passwordEncoder.encode("123") , admin1);
         };
     }
 }
