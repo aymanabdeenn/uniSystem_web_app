@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>AdminUI</title>
+    <link rel="stylesheet" th:href="@{/styles/styleAdmin/styleAdminUI.css}"/>
+</head>
+<body>
+    <div class="choices">
+        <a class="choice" th:href="@{/admin/showAddStudent}">Add a student</a>
+        <a class="choice" th:href="@{/admin/showAddDoctor}">Add a doctor</a>
+        <a class="choice" th:href="@{/admin/showCreateCourse}">Create a course</a>
+        <a class="choice" th:href="@{/admin/showCreateSection}">Create a section for a course</a>
+        <a class="choice" th:href="@{/admin/showAssignDoctor}">Assign a doctor to a section</a>
+    </div>
+</body>
+</html>

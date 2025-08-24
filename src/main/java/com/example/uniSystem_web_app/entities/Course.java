@@ -32,6 +32,8 @@ public class Course {
     )
     private String courseName;
 
+    private String faculty;
+
     @OneToMany(
             mappedBy = "course",
             cascade = CascadeType.ALL
@@ -40,9 +42,10 @@ public class Course {
 
     public Course(){}
 
-    public Course(String courseId, String courseName) {
+    public Course(String courseId, String courseName , String faculty) {
         this.courseId = courseId;
         this.courseName = courseName;
+        this.faculty =  faculty;
     }
 
     public Long getId() {
@@ -67,6 +70,14 @@ public class Course {
 
     public void setCourseName(String courseName) {
         this.courseName = courseName;
+    }
+
+    public String getFaculty() {
+        return faculty;
+    }
+
+    public void setFaculty(String faculty) {
+        this.faculty = faculty;
     }
 
     public List<Section> getSections() {

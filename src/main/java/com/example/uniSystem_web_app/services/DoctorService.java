@@ -1,17 +1,30 @@
 package com.example.uniSystem_web_app.services;
 
+import com.example.uniSystem_web_app.entities.Doctor;
 import com.example.uniSystem_web_app.repositories.DoctorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 
 @Service
 public class DoctorService {
 
+    private final AccountCreationService acs;
     private final DoctorRepository doctorRepository;
-
+    private final PasswordEncoder passwordEncoder;
     @Autowired
-    public DoctorService(DoctorRepository doctorRepository){
+    public DoctorService( AccountCreationService acs , DoctorRepository doctorRepository , PasswordEncoder passwordEncoder){
+        this.acs = acs;
         this.doctorRepository = doctorRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public Doctor createNewDoctor(String uniId, String name, LocalDate dob , String faculty , String username , String password){
+        Doctor doctor = new Doctor(uniId , name , dob , faculty);
+        acs.registerDoctor(username , passwordEncoder.encode(password) , doctor);
+        return doctor;
     }
 
 }

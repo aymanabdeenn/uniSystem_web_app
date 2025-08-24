@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Assign a doctor</title>
+    <link rel="stylesheet" th:href="@{/styles/styleAdmin/styleDataForms.css}"/>
+</head>
+<body>
+<div class="formContainer">
+    <h1 class="title">Assign a doctor to a section</h1>
+    <form class="form searchForm" method="GET" th:action="@{/admin/getDoctorsForFaculty}">
+        <div class="field">
+            <label class="text">Faculty</label>
+            <select name="faculty">
+                <option value="1">CS</option>
+                <option value="1">CPE</option>
+            </select>
+        </div>
+        <button type="submit" class="btn">Search</button>
+    </form>
+    <form class="form searchForm" method="GET" th:action="@{/admin/getSectionsForCourse}">
+        <div class="field">
+            <label class="text">Doctor</label>
+            <select name="doctorId">
+                <option value="1">doc1</option>
+                <option value="1">doc2</option>
+            </select>
+        </div>
+        <div class="field">
+            <label class="text">Course</label>
+            <select name="courseId">
+                <option value="1">Data Structures & Algorithms</option>
+                <option value="1">Operating Systems</option>
+            </select>
+        </div>
+        <button type="submit" class="btn">Search</button>
+    </form>
+    <form class="form" style="margin-bottom: 15px;" method="POST" th:action="@{/admin/assignDoctor}">
+        <div class="fields">
+            <div class="field">
+                <label class="text">Section</label>
+                <select name="sectionId">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                </select>
+            </div>
+        </div>
+        <button type="submit" class="btn">Assign</button>
+    </form>
+</div>
+</body>
+</html>

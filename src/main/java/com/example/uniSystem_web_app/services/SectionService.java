@@ -4,20 +4,24 @@ import com.example.uniSystem_web_app.entities.Course;
 import com.example.uniSystem_web_app.entities.Section;
 import com.example.uniSystem_web_app.entities.Student;
 import com.example.uniSystem_web_app.exceptions.SectionNotFoundException;
+import com.example.uniSystem_web_app.repositories.CourseRepository;
 import com.example.uniSystem_web_app.repositories.SectionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
 public class SectionService {
 
     private final SectionRepository sectionRepository;
+    private final CourseRepository courseRepository;
 
     @Autowired
-    public SectionService(SectionRepository sectionRepository){
+    public SectionService(SectionRepository sectionRepository , CourseRepository courseRepository){
         this.sectionRepository = sectionRepository;
+        this.courseRepository = courseRepository;
     }
 
     public Section getSectionBySectionId(Long sectionId){
@@ -40,6 +44,13 @@ public class SectionService {
             if(section.getSectionNumber() == sectionNumber) return section;
         }
         return null;
+    }
+
+    public Section createNewSection(Course course , int sectionNumber , LocalTime startTime , LocalTime endTime , int capacity){
+        Section section = new Section(course , sectionNumber , startTime , endTime , capacity);
+        course.getSections().add(section);
+        courseRepository.save(course);
+        return section;
     }
 
 }

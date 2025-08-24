@@ -2,6 +2,7 @@ package com.example.uniSystem_web_app.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,14 +25,36 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+//    @Bean
+//    @Order(1)
+//    public SecurityFilterChain adminChain(HttpSecurity http) throws Exception{
+//        http
+//                .userDetailsService(customUserDetailsService)
+//                .securityMatcher("/admin/**")
+//                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers("/admin/login").permitAll()
+//                        .requestMatchers("/admin/**").hasRole("ADMIN")
+//                )
+//                .formLogin(form -> form
+//                        .loginPage("/admin/login")         // custom admin login page
+//                        .loginProcessingUrl("/admin/login")// Spring Security processes login POST here
+//                        .failureUrl("/admin/login?error=true")       // on failure
+//                        .successHandler(adminAuthenticationSuccessHandler())
+//                );
+//
+//        return http.build();
+//    }
+
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+    @Order(2)
+    public SecurityFilterChain userChain(HttpSecurity http) throws Exception{
         http
                 .userDetailsService(customUserDetailsService)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/images/**").permitAll()
                         .requestMatchers("/student/**", "/styles/styleStudent/**" , "/scripts/scriptStudent/**").hasAnyRole("STUDENT" , "ADMIN")
                         .requestMatchers("/doctor/**", "/styles/styleDoctor/**" , "/scripts/scriptDoctor/**").hasAnyRole("DOCTOR" , "ADMIN")
+                        .requestMatchers("/admin/**" , "/styles/styleAdmin/**" , "/scripts/scriptAdmin/**").hasRole("ADMIN")
                         .requestMatchers("/shared/**").hasAnyRole("STUDENT", "DOCTOR" , "ADMIN")
                         .anyRequest().authenticated()
                 )
@@ -59,4 +82,10 @@ public class SecurityConfig {
             else response.sendRedirect("/uniSystem/admin/adminUI");
         };
     }
+
+//    private AuthenticationSuccessHandler adminAuthenticationSuccessHandler() {
+//        return (request, response , authentication) -> {
+//            response.sendRedirect("/uniSystem/admin/adminUI");
+//        };
+//    }
 }

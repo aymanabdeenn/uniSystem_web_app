@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add a student</title>
+    <link rel="stylesheet" th:href="@{/styles/styleAdmin/styleDataForms.css}"/>
+</head>
+<body>
+<div class="formContainer">
+    <h1 class="title">Add A Student</h1>
+    <form class="form" method="POST" th:action="@{/admin/addAStudent}">
+        <div class="fields">
+            <div class="field">
+                <label class="text">Student's name</label>
+                <input type="text" name="name"/>
+            </div>
+            <div class="field">
+                <label class="text">Student's Date Of Birth</label>
+                <input type="date" name="dob"/>
+            </div>
+            <div class="field">
+                <label class="text">Faculty</label>
+                <input type="text" name="faculty"/>
+            </div>
+            <div class="field">
+                <label class="text">University Id</label>
+                <input type="text" name="uniId"/>
+            </div>
+            <div class="field">
+                <label class="text">Email</label>
+                <input type="email" name="email"/>
+            </div>
+            <div class="field">
+                <label class="text">Password</label>
+                <input type="password" name="password"/>
+            </div>
+        </div>
+        <button type="submit" class="btn">Create</button>
+    </form>
+</div>
+</body>
+</html>

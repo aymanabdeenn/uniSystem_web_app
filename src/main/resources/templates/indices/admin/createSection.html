@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Create a Section</title>
+  <link rel="stylesheet" th:href="@{/styles/styleAdmin/styleDataForms.css}"/>
+</head>
+<body>
+<div class="formContainer">
+  <h1 class="title">Create a Section</h1>
+  <form class="form searchForm" method="GET" th:action="@{/admin/getCoursesForFaculty}">
+    <div class="field">
+      <label class="text">Faculty</label>
+<!--      <select name="faculty">-->
+<!--        <option value="2">CS</option>-->
+<!--        <option value="1">CPE</option>-->
+<!--      </select>-->
+      <input type="text" name="faculty"/>
+    </div>
+    <button type="submit" class="btn">Search</button>
+  </form>
+  <form class="form" style="margin-bottom: 15px;" method="POST" th:action="@{/admin/createASection}">
+    <div class="fields">
+      <div class="field">
+        <label class="text">Course</label>
+        <select name="courseId">
+          <option th:each="course : ${courses}" th:value="${course.courseId}" th:text="${course.courseName}"></option>
+
+<!--          <option value="1">Data Structures & Algorithms</option>-->
+<!--          <option value="2">Operating Systems</option>-->
+        </select>
+      </div>
+      <div class="field">
+        <label class="text">Section Number</label>
+        <input type="text" name="sectionNumber"/>
+      </div>
+      <div class="field">
+        <label class="text">Start Time</label>
+        <input type="time" name="startTime"/>
+      </div>
+      <div class="field">
+        <label class="text">End Time</label>
+        <input type="time" name="endTime"/>
+      </div>
+      <div class="field">
+        <label class="text">Capacity</label>
+        <input type="text" name="capacity"/>
+      </div>
+    </div>
+    <button type="submit" class="btn">Create</button>
+  </form>
+</div>
+</body>
+</html>

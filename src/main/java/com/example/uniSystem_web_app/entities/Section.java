@@ -39,12 +39,20 @@ public class Section {
     @Column(
             nullable = false
     )
-    private int takenSeats;
+    private int takenSeats = 0;
 
     private LocalTime startTime;
     private LocalTime endTime;
 
     public Section(){}
+
+    public Section(Course course , int sectionNumber , LocalTime startTime , LocalTime endTime , int capacity){
+        this.course = course;
+        this.sectionNumber = sectionNumber;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.capacity = capacity;
+    }
 
     public Section(Course course , Doctor assignedDoctor , int capacity , int takenSeats , LocalTime startTime , LocalTime endTime){
         this.course = course;
