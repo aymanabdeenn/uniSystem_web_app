@@ -11,7 +11,7 @@
     <div class="nameCard">
       <p class="studentName name" th:text="${student.name}"></p>
       <p class="facultyName">Faculty of</p>
-      <p class="facultyName" th:text="${student.faculty}"></p>
+      <p class="facultyName" th:text="${student.faculty.name}"></p>
     </div>
     <div class="choices">
       <a class="choice" th:href="@{/student/studentUI}">Home</a>

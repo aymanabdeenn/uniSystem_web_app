@@ -39,10 +39,9 @@ public class Student {
     @Transient
     private int age;
 
-    @Column(
-            nullable = false
-    )
-    private String faculty;
+    @ManyToOne
+    @JoinColumn(name = "faculty")
+    private Faculty faculty;
 
     @ManyToMany
     @JoinTable(
@@ -54,7 +53,13 @@ public class Student {
 
     public Student(){}
 
-    public Student(String uniId, String name, LocalDate dob , String faculty) {
+    public Student(String uniId, String name , LocalDate dob){
+        this.uniId = uniId;
+        this.name = name;
+        this.dob = dob;
+    }
+
+    public Student(String uniId, String name, LocalDate dob , Faculty faculty) {
         this.uniId = uniId;
         this.name = name;
         this.dob = dob;
@@ -101,11 +106,11 @@ public class Student {
         this.age = age;
     }
 
-    public String getFaculty() {
+    public Faculty getFaculty() {
         return faculty;
     }
 
-    public void setFaculty(String faculty) {
+    public void setFaculty(Faculty faculty) {
         this.faculty = faculty;
     }
 

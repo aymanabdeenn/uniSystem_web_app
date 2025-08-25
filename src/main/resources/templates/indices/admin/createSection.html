@@ -11,11 +11,10 @@
   <form class="form searchForm" method="GET" th:action="@{/admin/getCoursesForFaculty}">
     <div class="field">
       <label class="text">Faculty</label>
-<!--      <select name="faculty">-->
-<!--        <option value="2">CS</option>-->
-<!--        <option value="1">CPE</option>-->
-<!--      </select>-->
-      <input type="text" name="faculty"/>
+<!--      <input type="text" name="faculty"/>-->
+      <select name="faculty">
+        <option th:each="faculty : ${faculties}" th:value="${faculty.id}" th:text="${faculty.name}"></option>
+      </select>
     </div>
     <button type="submit" class="btn">Search</button>
   </form>
@@ -25,14 +24,7 @@
         <label class="text">Course</label>
         <select name="courseId">
           <option th:each="course : ${courses}" th:value="${course.courseId}" th:text="${course.courseName}"></option>
-
-<!--          <option value="1">Data Structures & Algorithms</option>-->
-<!--          <option value="2">Operating Systems</option>-->
         </select>
-      </div>
-      <div class="field">
-        <label class="text">Section Number</label>
-        <input type="text" name="sectionNumber"/>
       </div>
       <div class="field">
         <label class="text">Start Time</label>

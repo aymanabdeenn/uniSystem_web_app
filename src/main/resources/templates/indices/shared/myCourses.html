@@ -13,7 +13,7 @@
       <p class="name" th:text="${userType == 'student'} ? ${student.name} : ${doctor.name}"></p>
       <br>
       <p class="facultyName">Faculty of</p>
-      <p class="facultyName" th:text="${userType == 'student'} ? ${student.faculty} : ${doctor.faculty}"></p>
+      <p class="facultyName" th:text="${userType == 'student'} ? ${student.faculty.name} : ${doctor.faculty.name}"></p>
     </div>
     <div class="choices">
       <a class="choice" th:href="${userType == 'student'} ? @{/student/studentUI} : @{/doctor/doctorUI}">Home</a>

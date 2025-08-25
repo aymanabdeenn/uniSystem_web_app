@@ -32,7 +32,9 @@ public class Course {
     )
     private String courseName;
 
-    private String faculty;
+    @ManyToOne
+    @JoinColumn(name = "faculty")
+    private Faculty faculty;
 
     @OneToMany(
             mappedBy = "course",
@@ -42,7 +44,12 @@ public class Course {
 
     public Course(){}
 
-    public Course(String courseId, String courseName , String faculty) {
+    public Course(String courseId , String courseName){
+        this.courseId = courseId;
+        this.courseName = courseName;
+    }
+
+    public Course(String courseId, String courseName , Faculty faculty) {
         this.courseId = courseId;
         this.courseName = courseName;
         this.faculty =  faculty;
@@ -72,11 +79,11 @@ public class Course {
         this.courseName = courseName;
     }
 
-    public String getFaculty() {
+    public Faculty getFaculty() {
         return faculty;
     }
 
-    public void setFaculty(String faculty) {
+    public void setFaculty(Faculty faculty) {
         this.faculty = faculty;
     }
 

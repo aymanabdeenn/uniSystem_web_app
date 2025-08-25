@@ -12,7 +12,7 @@
       <p class="doctorName name">Dr.</p>
       <p class="doctorName" th:text="${doctor.name}"></p>
       <p class="facultyName">Faculty of</p>
-      <p class="facultyName" th:text="${doctor.faculty}"></p>
+      <p class="facultyName" th:text="${doctor.faculty.name}"></p>
     </div>
     <div class="choices">
       <a class="choice" th:href="@{/doctor/doctorUI}">Home</a>

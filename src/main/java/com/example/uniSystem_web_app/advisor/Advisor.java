@@ -1,9 +1,6 @@
 package com.example.uniSystem_web_app.advisor;
 
-import com.example.uniSystem_web_app.exceptions.DoctorNotFoundException;
-import com.example.uniSystem_web_app.exceptions.RoleDoesNotExistException;
-import com.example.uniSystem_web_app.exceptions.SectionNotFoundException;
-import com.example.uniSystem_web_app.exceptions.StudentNotFoundException;
+import com.example.uniSystem_web_app.exceptions.*;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -28,6 +25,11 @@ public class Advisor {
     }
     @ExceptionHandler(SectionNotFoundException.class)
     public void SectionDoesNotExist(SectionNotFoundException ex){
+        System.out.println(ex.getMessage());
+    }
+
+    @ExceptionHandler(FacultyNotFoundException.class)
+    public void FacultyNotFound(FacultyNotFoundException ex){
         System.out.println(ex.getMessage());
     }
 

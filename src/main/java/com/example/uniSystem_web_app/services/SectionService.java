@@ -46,7 +46,15 @@ public class SectionService {
         return null;
     }
 
-    public Section createNewSection(Course course , int sectionNumber , LocalTime startTime , LocalTime endTime , int capacity){
+//    public Section createNewSection(Course course , int sectionNumber , LocalTime startTime , LocalTime endTime , int capacity){
+//        Section section = new Section(course , sectionNumber , startTime , endTime , capacity);
+//        course.getSections().add(section);
+//        courseRepository.save(course);
+//        return section;
+//    }
+
+    public Section createNewSection(Course course , LocalTime startTime , LocalTime endTime , int capacity){
+        int sectionNumber = course.getSections().size() + 1;
         Section section = new Section(course , sectionNumber , startTime , endTime , capacity);
         course.getSections().add(section);
         courseRepository.save(course);
