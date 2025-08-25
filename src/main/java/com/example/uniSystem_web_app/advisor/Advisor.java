@@ -7,6 +7,8 @@ import com.example.uniSystem_web_app.exceptions.StudentNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.sql.SQLIntegrityConstraintViolationException;
+
 @ControllerAdvice
 public class Advisor {
 

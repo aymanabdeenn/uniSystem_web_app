@@ -6,6 +6,15 @@
     <link rel="stylesheet" th:href="@{/styles/styleAdmin/styleAdminUI.css}"/>
 </head>
 <body>
+    <div class="messageContainer" th:if="${success != null || nameEmpty != null || uniIdEmpty != null || emailEmpty != null || passwordEmpty != null || courseNameEmpty != null || courseIdEmpty != null || facultyEmpty != null || courseNotFound != null}">
+        <div class="message">
+            <div class="exitButton"><img draggable="false" th:src="@{/images/closeIcon.png}"/></div>
+            <h2 class="messageTitle text" th:text="${success != null  ? 'Operation succeeded.' : 'Operation failed.'}"
+            >
+            </h2>
+            <div class="messageContent text" th:text="${success != null ? 'The Operation has been completed successfully.' : (courseNameEmpty != null ? 'Course name can not be empty.' : (courseIdEmpty != null ? 'Course code can not be empty.' : (facultyEmpty != null ? 'Faculty name can not be empty.' : (nameEmpty != null ? 'Name can not be empty.' : (uniIdEmpty != null ? 'University Id can not be empty.' : (emailEmpty != null ? 'Email can not be empty.' : (passwordEmpty != null ? 'Password can not be empty.' : (courseNotFound != null ? 'Course was not found.' : ''))))))))}"></div>
+        </div>
+    </div>
     <div class="choices">
         <a class="choice" th:href="@{/admin/showAddStudent}">Add a student</a>
         <a class="choice" th:href="@{/admin/showAddDoctor}">Add a doctor</a>
@@ -13,5 +22,6 @@
         <a class="choice" th:href="@{/admin/showCreateSection}">Create a section for a course</a>
         <a class="choice" th:href="@{/admin/showAssignDoctor}">Assign a doctor to a section</a>
     </div>
+<script th:src="@{/scripts/scriptAdmin/scriptAdminUI.js}"></script>
 </body>
 </html>

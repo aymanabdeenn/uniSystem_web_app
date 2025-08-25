@@ -34,7 +34,27 @@ public class AdminController {
     }
 
     @GetMapping("/adminUI")
-    public String adminUI(Model model){
+    public String adminUI(
+            Model model
+            , @RequestParam(required = false) String nameEmpty
+            , @RequestParam(required = false) String uniIdEmpty
+            , @RequestParam(required = false) String emailEmpty
+            , @RequestParam(required = false) String passwordEmpty
+            , @RequestParam(required = false) String courseNameEmpty
+            , @RequestParam(required = false) String courseIdEmpty
+            , @RequestParam(required = false) String facultyEmpty
+            , @RequestParam(required = false) String courseNotFound
+            , @RequestParam(required = false) String success
+    ){
+        if(courseNameEmpty != null) model.addAttribute("courseNameEmpty" , courseNameEmpty);
+        if(courseIdEmpty != null) model.addAttribute("courseIdEmpty" , courseIdEmpty);
+        if(facultyEmpty != null) model.addAttribute("facultyEmpty" , facultyEmpty);
+        if(nameEmpty != null) model.addAttribute("nameEmpty" , nameEmpty);
+        if(uniIdEmpty != null) model.addAttribute("uniIdEmpty" , uniIdEmpty);
+        if(emailEmpty != null) model.addAttribute("emailEmpty" , emailEmpty);
+        if(passwordEmpty != null) model.addAttribute("passwordEmpty" , passwordEmpty);
+        if(courseNotFound != null) model.addAttribute("courseNotFound" , courseNotFound);
+        if(success != null) model.addAttribute("success" , success);
         return "/indices/admin/adminUI.html";
     }
 
@@ -68,9 +88,13 @@ public class AdminController {
             , @RequestParam(name = "email") String username
             , @RequestParam String password
     ){
-        //String uniId, String name, LocalDate dob , String faculty , String username , String password
+        if(name.isEmpty()) return "redirect:/admin/adminUI?nameEmpty";
+        if(uniId.isEmpty()) return "redirect:/admin/adminUI?uniIdEmpty";
+        if(faculty.isEmpty()) return "redirect:/admin/adminUI?facultyEmpty";
+        if(username.isEmpty()) return "redirect:/admin/adminUI?emailEmpty";
+        if(password.isEmpty()) return "redirect:/admin/adminUI?passwordEmpty";
         studentService.createNewStudent(uniId , name , dob , faculty , username , password);
-        return "redirect:/admin/adminUI";
+        return "redirect:/admin/adminUI?success";
     }
 
     @PostMapping("/addADoctor")
@@ -83,8 +107,13 @@ public class AdminController {
             , @RequestParam(name = "email") String username
             , @RequestParam String password
     ){
+        if(name.isEmpty()) return "redirect:/admin/adminUI?nameEmpty";
+        if(uniId.isEmpty()) return "redirect:/admin/adminUI?uniIdEmpty";
+        if(faculty.isEmpty()) return "redirect:/admin/adminUI?facultyEmpty";
+        if(username.isEmpty()) return "redirect:/admin/adminUI?emailEmpty";
+        if(password.isEmpty()) return "redirect:/admin/adminUI?passwordEmpty";
         doctorService.createNewDoctor(uniId , name , dob , faculty , username , password);
-        return "redirect:/admin/adminUI";
+        return "redirect:/admin/adminUI?success";
     }
 
     @PostMapping("/createACourse")
@@ -94,8 +123,11 @@ public class AdminController {
             , @RequestParam(name = "courseCode") String courseId
             , @RequestParam String faculty
     ){
+        if(name.isEmpty()) return "redirect:/admin/adminUI?courseNameEmpty";
+        if(courseId.isEmpty()) return "redirect:/admin/adminUI?courseIdEmpty";
+        if(faculty.isEmpty()) return "redirect:/admin/adminUI?facultyEmpty";
         courseService.createNewCourse(name , courseId , faculty);
-        return "redirect:/admin/adminUI";
+        return "redirect:/admin/adminUI?success";
     }
     @PostMapping("/createASection")
     public String createASection(
@@ -106,9 +138,10 @@ public class AdminController {
             , @RequestParam LocalTime endTime
             , @RequestParam int capacity
     ){
+        if(courseId.isEmpty()) return "redirect:/admin/adminUI?courseNotFound";
         Course course = courseService.getCourseByCourseId(courseId);
         sectionService.createNewSection(course , sectionNumber , startTime , endTime , capacity);
-        return "redirect:/admin/adminUI";
+        return "redirect:/admin/adminUI?success";
     }
 
     @GetMapping("getCoursesForFaculty")
@@ -116,6 +149,7 @@ public class AdminController {
             Model model
             , @RequestParam String faculty
     ){
+        if(faculty.isEmpty()) return "redirect:/admin/adminUI?facultyEmpty";
         List<Course> courses = courseService.getCoursesByFaculty(faculty);
         model.addAttribute("courses" , courses);
         return "/indices/admin/createSection.html";
