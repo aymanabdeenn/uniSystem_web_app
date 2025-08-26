@@ -78,7 +78,18 @@ public class StudentController {
     }
 
     @GetMapping("/showRegisterMenu")
-    public String registerMenu(Model model , @RequestParam(required = false) String courseId , @RequestParam(required = false) String success , @RequestParam(required = false) String notFound , @RequestParam(required = false) String fullCap , @RequestParam(required = false) String alreadyRegistered, @RequestParam(required = false) String sectionNotFound , @RequestParam(required = false) String alreadyHasSectionWithinCourse, @RequestParam(required = false) String notValidated){
+    public String registerMenu(
+            Model model
+            , @RequestParam(required = false) String courseId
+            , @RequestParam(required = false) String success
+            , @RequestParam(required = false) String notFound
+            , @RequestParam(required = false) String fullCap
+            , @RequestParam(required = false) String alreadyRegistered
+            , @RequestParam(required = false) String sectionNotFound
+            , @RequestParam(required = false) String alreadyHasSectionWithinCourse
+            , @RequestParam(required = false) String notValidated
+            , @RequestParam(required = false) String timeOverlap
+    ){
         Student student = getLoggedInStudent();
         List<Course> courses = courseService.getAllCourses();
         model.addAttribute("student" , student);
@@ -90,6 +101,7 @@ public class StudentController {
         else if(sectionNotFound != null) model.addAttribute("sectionNotFound" , sectionNotFound);
         else if(alreadyHasSectionWithinCourse != null) model.addAttribute("alreadyHasSectionWithinCourse" , alreadyHasSectionWithinCourse);
         else if(alreadyRegistered != null) model.addAttribute("alreadyRegistered" , alreadyRegistered);
+        else if(timeOverlap != null) model.addAttribute("timeOverlap" , timeOverlap);
         if(courseId != null) {
             Course course = courseService.getCourseByCourseId(courseId);
             model.addAttribute("sections" , course.getSections());
@@ -119,6 +131,10 @@ public class StudentController {
             if(student.hasSectionWithSameCourse(section)) return "redirect:/student/showRegisterMenu?alreadyHasSectionWithinCourse";
             if(section.getTakenSeats() >= section.getCapacity()) return "redirect:/student/showRegisterMenu?fullCap";
             if(studentService.doesStudentHasASection(student , section.getId())) return "redirect:/student/showRegisterMenu?alreadyRegistered";
+
+            boolean doesSectionTimeOverlap = doesStudentHasSectionWithSameTime(student , section);
+            if(doesSectionTimeOverlap) return "redirect:/student/showRegisterMenu?timeOverlap";
+
             synchronized (this){
                 section.setTakenSeats(section.getTakenSeats() + 1);
                 addSection(student , section);
@@ -127,6 +143,13 @@ public class StudentController {
             return "redirect:/student/showRegisterMenu?success";
         }
         else return "redirect:/student/showRegisterMenu?notValidated";
+    }
+
+    public boolean doesStudentHasSectionWithSameTime(Student student , Section section){
+        for(Section SECTION : student.getSections()){
+            if(SECTION.getTimePeriod().getId() == section.getTimePeriod().getId()) return true;
+        }
+        return false;
     }
 
 }

@@ -8,11 +8,11 @@
 <body>
 <div class="formContainer">
   <h1 class="title">Create a Section</h1>
-  <form class="form searchForm" method="GET" th:action="@{/admin/getCoursesForFaculty}">
+  <form class="form searchForm" method="GET" th:action="@{/admin/getCoursesToCreateSection}">
     <div class="field">
       <label class="text">Faculty</label>
-<!--      <input type="text" name="faculty"/>-->
       <select name="faculty">
+        <option value="" disabled selected>---------------------</option>
         <option th:each="faculty : ${faculties}" th:value="${faculty.id}" th:text="${faculty.name}"></option>
       </select>
     </div>
@@ -23,16 +23,16 @@
       <div class="field">
         <label class="text">Course</label>
         <select name="courseId">
+          <option value="" disabled selected>---------------------</option>
           <option th:each="course : ${courses}" th:value="${course.courseId}" th:text="${course.courseName}"></option>
         </select>
       </div>
       <div class="field">
-        <label class="text">Start Time</label>
-        <input type="time" name="startTime"/>
-      </div>
-      <div class="field">
-        <label class="text">End Time</label>
-        <input type="time" name="endTime"/>
+        <label class="text">Time Period</label>
+        <select name="timePeriodId">
+          <option value="" disabled selected>---------------------</option>
+          <option th:each="timePeriod : ${timePeriods}" th:value="${timePeriod.id}" th:text="${timePeriod.toString}"></option>
+        </select>
       </div>
       <div class="field">
         <label class="text">Capacity</label>

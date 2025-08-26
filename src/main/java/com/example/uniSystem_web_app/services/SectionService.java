@@ -3,9 +3,12 @@ package com.example.uniSystem_web_app.services;
 import com.example.uniSystem_web_app.entities.Course;
 import com.example.uniSystem_web_app.entities.Section;
 import com.example.uniSystem_web_app.entities.Student;
+import com.example.uniSystem_web_app.entities.TimePeriod;
 import com.example.uniSystem_web_app.exceptions.SectionNotFoundException;
+import com.example.uniSystem_web_app.exceptions.TimePeriodNotFoundException;
 import com.example.uniSystem_web_app.repositories.CourseRepository;
 import com.example.uniSystem_web_app.repositories.SectionRepository;
+import com.example.uniSystem_web_app.repositories.TimePeriodRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +20,13 @@ public class SectionService {
 
     private final SectionRepository sectionRepository;
     private final CourseRepository courseRepository;
+    private final TimePeriodRepository timePeriodRepository;
 
     @Autowired
-    public SectionService(SectionRepository sectionRepository , CourseRepository courseRepository){
+    public SectionService(SectionRepository sectionRepository , CourseRepository courseRepository , TimePeriodRepository timePeriodRepository){
         this.sectionRepository = sectionRepository;
         this.courseRepository = courseRepository;
+        this.timePeriodRepository = timePeriodRepository;
     }
 
     public Section getSectionBySectionId(Long sectionId){
@@ -46,16 +51,10 @@ public class SectionService {
         return null;
     }
 
-//    public Section createNewSection(Course course , int sectionNumber , LocalTime startTime , LocalTime endTime , int capacity){
-//        Section section = new Section(course , sectionNumber , startTime , endTime , capacity);
-//        course.getSections().add(section);
-//        courseRepository.save(course);
-//        return section;
-//    }
-
-    public Section createNewSection(Course course , LocalTime startTime , LocalTime endTime , int capacity){
+    public Section createNewSection(Course course , Long timePeriodId , int capacity){
         int sectionNumber = course.getSections().size() + 1;
-        Section section = new Section(course , sectionNumber , startTime , endTime , capacity);
+        TimePeriod timePeriod = timePeriodRepository.findById(timePeriodId).orElseThrow(() -> new TimePeriodNotFoundException("Time period not found."));
+        Section section = new Section(course , sectionNumber , timePeriod , capacity);
         course.getSections().add(section);
         courseRepository.save(course);
         return section;

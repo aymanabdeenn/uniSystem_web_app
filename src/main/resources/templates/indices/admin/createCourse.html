@@ -20,8 +20,8 @@
       </div>
       <div class="field">
         <label class="text">Faculty</label>
-<!--        <input type="text" name="faculty"/>-->
         <select name="faculty">
+          <option value="" disabled selected>---------------------</option>
           <option th:each="faculty : ${faculties}" th:value="${faculty.id}" th:text="${faculty.name}"></option>
         </select>
       </div>

@@ -41,26 +41,25 @@ public class Section {
     )
     private int takenSeats = 0;
 
-    private LocalTime startTime;
-    private LocalTime endTime;
+    @ManyToOne
+    @JoinColumn(name = "time_period_id")
+    private TimePeriod timePeriod;
 
     public Section(){}
 
-    public Section(Course course , int sectionNumber , LocalTime startTime , LocalTime endTime , int capacity){
+    public Section(Course course , int sectionNumber , TimePeriod timePeriod , int capacity){
         this.course = course;
         this.sectionNumber = sectionNumber;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.timePeriod = timePeriod;
         this.capacity = capacity;
     }
 
-    public Section(Course course , Doctor assignedDoctor , int capacity , int takenSeats , LocalTime startTime , LocalTime endTime){
+    public Section(Course course , Doctor assignedDoctor , int capacity , int takenSeats , TimePeriod timePeriod){
         this.course = course;
         this.assignedDoctor = assignedDoctor;
         this.capacity = capacity;
         this.takenSeats = takenSeats;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.timePeriod = timePeriod;
     }
     public Long getId() {
         return id;
@@ -118,21 +117,9 @@ public class Section {
         this.takenSeats = takenSeats;
     }
 
-    public LocalTime getStartTime() {
-        return startTime;
-    }
+    public TimePeriod getTimePeriod(){ return timePeriod; }
 
-    public void setStartTime(LocalTime startTime) {
-        this.startTime = startTime;
-    }
-
-    public LocalTime getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(LocalTime endTime) {
-        this.endTime = endTime;
-    }
+    public void setTimePeriod(TimePeriod timePeriod){ this.timePeriod = timePeriod; }
 
     public int numOfStudents(){
         return this.students.size();

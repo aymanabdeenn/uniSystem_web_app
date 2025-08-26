@@ -33,4 +33,9 @@ public class Advisor {
         System.out.println(ex.getMessage());
     }
 
+    @ExceptionHandler(TimePeriodNotFoundException.class)
+    public void TimePeriodNotFound(TimePeriodNotFoundException ex){
+        System.out.println(ex.getMessage());
+    }
+
 }

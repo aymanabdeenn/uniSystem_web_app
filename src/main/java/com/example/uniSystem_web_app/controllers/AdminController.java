@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -25,15 +26,17 @@ public class AdminController {
     private final CourseService courseService;
     private final SectionService sectionService;
     private final FacultyService facultyService;
+    private final TimePeriodService timePeriodService;
 
     @Autowired
-    public AdminController(AdminService adminService , StudentService studentService , DoctorService doctorService , CourseService courseService , SectionService sectionService , FacultyService facultyService){
+    public AdminController(AdminService adminService , StudentService studentService , DoctorService doctorService , CourseService courseService , SectionService sectionService , FacultyService facultyService , TimePeriodService timePeriodService){
         this.adminService = adminService;
         this.studentService = studentService;
         this.doctorService = doctorService;
         this.courseService = courseService;
         this.sectionService = sectionService;
         this.facultyService = facultyService;
+        this.timePeriodService = timePeriodService;
     }
 
     @GetMapping("/adminUI")
@@ -47,6 +50,7 @@ public class AdminController {
             , @RequestParam(required = false) String courseIdEmpty
             , @RequestParam(required = false) String facultyEmpty
             , @RequestParam(required = false) String courseNotFound
+            , @RequestParam(required = false) String timePeriodExists
             , @RequestParam(required = false) String success
     ){
         if(courseNameEmpty != null) model.addAttribute("courseNameEmpty" , courseNameEmpty);
@@ -57,6 +61,7 @@ public class AdminController {
         if(emailEmpty != null) model.addAttribute("emailEmpty" , emailEmpty);
         if(passwordEmpty != null) model.addAttribute("passwordEmpty" , passwordEmpty);
         if(courseNotFound != null) model.addAttribute("courseNotFound" , courseNotFound);
+        if(timePeriodExists != null) model.addAttribute("timePeriodExists" , timePeriodExists);
         if(success != null) model.addAttribute("success" , success);
         return "/indices/admin/adminUI.html";
     }
@@ -91,6 +96,11 @@ public class AdminController {
     public String showAssignDoctor(Model model) {
         model.addAttribute("faculties" , facultyService.getAllFaculties());
         return "/indices/admin/assignDoctorToSection.html";
+    }
+
+    @GetMapping("/showCreateTimePeriod")
+    public String showCreateTimePeriod(Model model){
+        return "/indices/admin/createTimePeriod.html";
     }
 
     @PostMapping("/addAStudent")
@@ -145,24 +155,24 @@ public class AdminController {
     public String createASection(
             Model model
             , @RequestParam String courseId
-            , @RequestParam LocalTime startTime
-            , @RequestParam LocalTime endTime
+            , @RequestParam Long timePeriodId
             , @RequestParam int capacity
     ){
         if(courseId.isEmpty()) return "redirect:/admin/adminUI?courseNotFound";
         Course course = courseService.getCourseByCourseId(courseId);
-        sectionService.createNewSection(course , startTime , endTime , capacity);
+        sectionService.createNewSection(course , timePeriodId , capacity);
         return "redirect:/admin/adminUI?success";
     }
 
-    @GetMapping("getCoursesForFaculty")
-    public String getCoursesForFaculty(
+    @GetMapping("getCoursesToCreateSection")
+    public String getCoursesToCreateSection(
             Model model
             , @RequestParam(name = "faculty") Long facultyId
     ){
         List<Course> courses = courseService.getCoursesByFaculty(facultyId);
         model.addAttribute("courses" , courses);
         model.addAttribute("faculties" , facultyService.getAllFaculties());
+        model.addAttribute("timePeriods" , timePeriodService.getAllTimePeriods());
         return "/indices/admin/createSection.html";
     }
 
@@ -200,6 +210,41 @@ public class AdminController {
         model.addAttribute("sections" , course.getSections());
         model.addAttribute("faculties", facultyService.getAllFaculties());
         return "/indices/admin/assignDoctorToSection.html";
+    }
+
+    @PostMapping("/createATimePeriod")
+    public String createATimePeriod(
+            Model model
+            , @RequestParam(name = "days") String daysCode
+            , @RequestParam(name = "timePeriod") String timePeriodCode
+    ){
+        List<String> days = new ArrayList<String>();
+        switch(daysCode){
+            case "1" : {days.add("SUN"); days.add("TUE"); days.add("THU"); break;}
+            case "2" : {days.add("MON"); days.add("WED"); break;}
+        }
+
+        LocalTime startTime = LocalTime.of(0 , 0 ,0) , endTime = LocalTime.of(0 , 0 ,0);
+        switch(timePeriodCode){
+            case "1": {startTime = LocalTime.of(9,0,0); endTime = LocalTime.of(10,0,0); break;}
+            case "2": {startTime = LocalTime.of(10,0,0); endTime = LocalTime.of(11,0,0); break;}
+            case "3": {startTime = LocalTime.of(11,0,0); endTime = LocalTime.of(12,0,0); break;}
+            case "4": {startTime = LocalTime.of(12,0,0); endTime = LocalTime.of(13,0,0); break;}
+            case "5": {startTime = LocalTime.of(13,0,0); endTime = LocalTime.of(14,0,0); break;}
+            case "6": {startTime = LocalTime.of(14,0,0); endTime = LocalTime.of(15,0,0); break;}
+            case "7": {startTime = LocalTime.of(15,0,0); endTime = LocalTime.of(16,0,0); break;}
+            case "8": {startTime = LocalTime.of(8,30,0); endTime = LocalTime.of(10,0,0); break;}
+            case "9": {startTime = LocalTime.of(10,0,0); endTime = LocalTime.of(11,30,0); break;}
+            case "10": {startTime = LocalTime.of(11,30,0); endTime = LocalTime.of(13,0,0); break;}
+            case "11": {startTime = LocalTime.of(13,0,0); endTime = LocalTime.of(14,30,0); break;}
+            case "12": {startTime = LocalTime.of(14,30,0); endTime = LocalTime.of(16,0,0); break;}
+        }
+
+        boolean doesExist = timePeriodService.timePeriodExists(startTime , endTime , days);
+        if(doesExist) return "redirect:/admin/adminUI?timePeriodExists";
+
+        timePeriodService.createNewTimePeriod(startTime , endTime , days);
+        return "redirect:/admin/adminUI?success";
     }
 
 }

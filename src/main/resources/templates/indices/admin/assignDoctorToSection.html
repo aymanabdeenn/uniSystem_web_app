@@ -12,6 +12,7 @@
         <div class="field">
             <label class="text">Faculty</label>
             <select name="faculty">
+                <option value="" disabled selected>---------------------</option>
                 <option th:each="faculty : ${faculties}" th:value="${faculty.id}" th:text="${faculty.name}"></option>
             </select>
         </div>
@@ -21,6 +22,7 @@
         <div class="field">
             <label class="text">Course</label>
             <select name="courseId">
+                <option value="" disabled selected>---------------------</option>
                 <option th:each="course : ${courses}" th:value="${course.courseId}" th:text="${course.courseName}"></option>
             </select>
         </div>
@@ -32,12 +34,14 @@
             <div class="field">
                 <label class="text">Doctor</label>
                 <select name="doctorId">
+                    <option value="" disabled selected>---------------------</option>
                     <option th:each="doctor : ${doctors}" th:value="${doctor.id}" th:text="${doctor.name}"></option>
                 </select>
             </div>
             <div class="field">
                 <label class="text">Section</label>
                 <select name="sectionId">
+                    <option value="" disabled selected>---------------------</option>
                     <option th:each="section : ${sections}" th:value="${section.id}" th:text="${section.sectionNumber}"></option>
                 </select>
             </div>
