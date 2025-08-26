@@ -176,13 +176,13 @@ public class AdminController {
         return "redirect:/admin/adminUI?success";
     }
 
-    @GetMapping("/getDoctorsForFaculty")
-    public String getDoctorsForFaculty(
+    @GetMapping("/getCoursesToAssign")
+    public String getCoursesToAssign(
             Model model
             , @RequestParam(name = "faculty") Long facultyId
     ){
         Faculty faculty = facultyService.getFacultyById(facultyId);
-        model.addAttribute("doctors" , faculty.getDoctors());
+        model.addAttribute("facultyId" , faculty.getId());
         model.addAttribute("courses" , faculty.getCourses());
         model.addAttribute("faculties", facultyService.getAllFaculties());
         return "/indices/admin/assignDoctorToSection.html";
@@ -191,11 +191,12 @@ public class AdminController {
     @GetMapping("/getSectionsForCourse")
     public String getSectionsForCourse(
             Model model
-            , @RequestParam Long doctorId
+            , @RequestParam(name = "facultyId") Long facultyId
             , @RequestParam String courseId
     ){
         Course course = courseService.getCourseByCourseId(courseId);
-        model.addAttribute("doctorId" , doctorId);
+        Faculty faculty = facultyService.getFacultyById(facultyId);
+        model.addAttribute("doctors" , faculty.getDoctors());
         model.addAttribute("sections" , course.getSections());
         model.addAttribute("faculties", facultyService.getAllFaculties());
         return "/indices/admin/assignDoctorToSection.html";

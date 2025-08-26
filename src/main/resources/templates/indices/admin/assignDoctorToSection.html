@@ -8,7 +8,7 @@
 <body>
 <div class="formContainer">
     <h1 class="title">Assign a doctor to a section</h1>
-    <form class="form searchForm" method="GET" th:action="@{/admin/getDoctorsForFaculty}">
+    <form class="form searchForm" method="GET" th:action="@{/admin/getCoursesToAssign}">
         <div class="field">
             <label class="text">Faculty</label>
             <select name="faculty">
@@ -17,23 +17,24 @@
         </div>
         <button type="submit" class="btn">Search</button>
     </form>
-    <form th:if="${doctors != null}" class="form searchForm" method="GET" th:action="@{/admin/getSectionsForCourse}">
-        <div class="field">
-            <label class="text">Doctor</label>
-            <select name="doctorId">
-                <option th:each="doctor : ${doctors}" th:value="${doctor.id}" th:text="${doctor.name}"></option>
-            </select>
-        </div>
+    <form th:if="${courses != null}" class="form searchForm" method="GET" th:action="@{/admin/getSectionsForCourse}">
         <div class="field">
             <label class="text">Course</label>
             <select name="courseId">
                 <option th:each="course : ${courses}" th:value="${course.courseId}" th:text="${course.courseName}"></option>
             </select>
         </div>
+        <input type="hidden" name="facultyId" th:value="${facultyId}"/>
         <button type="submit" class="btn">Search</button>
     </form>
-    <form th:if="${sections != null}" class="form" style="margin-bottom: 15px;" method="POST" th:action="@{/admin/assignDoctor}">
+    <form th:if="${sections != null || doctors != null}" class="form" style="margin-bottom: 15px;" method="POST" th:action="@{/admin/assignDoctor}">
         <div class="fields">
+            <div class="field">
+                <label class="text">Doctor</label>
+                <select name="doctorId">
+                    <option th:each="doctor : ${doctors}" th:value="${doctor.id}" th:text="${doctor.name}"></option>
+                </select>
+            </div>
             <div class="field">
                 <label class="text">Section</label>
                 <select name="sectionId">
