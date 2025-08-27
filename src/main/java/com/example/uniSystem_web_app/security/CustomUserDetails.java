@@ -33,6 +33,10 @@ public class CustomUserDetails implements UserDetails {
         return this.account.getUsername();
     }
 
+    public Account getAccount() {return this.account;}
+
+    public boolean getPasswordChanged() { return this.account.getPasswordChanged();}
+
     public Student getStudent(){
         return this.account.getStudent();
     }

@@ -12,35 +12,37 @@
         <div class="fields">
             <div class="field">
                 <label class="text">Student's name</label>
-                <input type="text" name="name"/>
+                <input id="name" type="text" name="name"/>
             </div>
             <div class="field">
                 <label class="text">Student's Date Of Birth</label>
-                <input type="date" name="dob"/>
+                <div class="inputContainer">
+                    <input id="dob" type="date" name="dob"/>
+                    <h3 class="errorText" id="errorDob"></h3>
+                </div>
             </div>
             <div class="field">
                 <label class="text">Faculty</label>
-<!--                <input type="text" name="faculty"/>-->
-                <select name="faculty">
-                    <option value="" disabled selected>---------------------</option>
-                    <option th:each="faculty : ${faculties}" th:value="${faculty.id}" th:text="${faculty.name}"></option>
-                </select>
+                <div class="inputContainer">
+                    <select id="faculty" name="faculty">
+                        <option value="" disabled selected>---------------------</option>
+                        <option th:each="faculty : ${faculties}" th:value="${faculty.id}" th:text="${faculty.name}"></option>
+                    </select>
+                    <h3 class="errorText" id="errorFaculty"></h3>
+                </div>
             </div>
             <div class="field">
                 <label class="text">University Id</label>
-                <input type="text" name="uniId"/>
+                <input id="uniId" type="text" name="uniId"/>
             </div>
             <div class="field">
                 <label class="text">Email</label>
-                <input type="email" name="email"/>
-            </div>
-            <div class="field">
-                <label class="text">Password</label>
-                <input type="password" name="password"/>
+                <input id="email" type="email" name="email"/>
             </div>
         </div>
         <button type="submit" class="btn">Create</button>
     </form>
+    <script th:src="@{/scripts/scriptAdmin/scriptAddAStudent.js}"></script>
 </div>
 </body>
 </html>

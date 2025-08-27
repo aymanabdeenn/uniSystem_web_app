@@ -66,9 +66,10 @@ public class TimePeriod {
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        for(TimePeriodDay day : days) {
-            sb.append(day.getWeekDay());
-            sb.append("-");
+        for(int i = 0 ; i < days.size() ; i++) {
+            sb.append(days.get(i).getWeekDay());
+            if(i != days.size() - 1) sb.append("-");
+            else sb.append(" ");
         }
         sb.append(startTime);
         sb.append("--");

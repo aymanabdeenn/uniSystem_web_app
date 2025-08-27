@@ -16,15 +16,20 @@
       </div>
       <div class="field">
         <label class="text">Doctor's Date Of Birth</label>
-        <input type="date" name="dob"/>
+        <div class="inputContainer">
+          <input id="dob" type="date" name="dob"/>
+          <h3 class="errorText" id="errorDob"></h3>
+        </div>
       </div>
       <div class="field">
         <label class="text">Faculty</label>
-<!--        <input type="text" name="faculty"/>-->
-        <select name="faculty">
-          <option value="" disabled selected>---------------------</option>
-          <option th:each="faculty : ${faculties}" th:value="${faculty.id}" th:text="${faculty.name}"></option>
-        </select>
+        <div class="inputContainer">
+          <select id="faculty" name="faculty">
+            <option value="" disabled selected>---------------------</option>
+            <option th:each="faculty : ${faculties}" th:value="${faculty.id}" th:text="${faculty.name}"></option>
+          </select>
+          <h3 class="errorText" id="errorFaculty"></h3>
+        </div>
       </div>
       <div class="field">
         <label class="text">University Id</label>
@@ -42,5 +47,7 @@
     <button type="submit" class="btn">Create</button>
   </form>
 </div>
+<script th:src="@{/scripts/scriptAdmin/scriptAddADoctor.js}"></script>
+
 </body>
 </html>

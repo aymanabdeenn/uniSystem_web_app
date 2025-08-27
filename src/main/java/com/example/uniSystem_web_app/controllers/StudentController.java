@@ -1,5 +1,7 @@
 package com.example.uniSystem_web_app.controllers;
 
+import com.example.uniSystem_web_app.dto.NewPasswordDTO;
+import com.example.uniSystem_web_app.entities.Account;
 import com.example.uniSystem_web_app.entities.Course;
 import com.example.uniSystem_web_app.entities.Section;
 import com.example.uniSystem_web_app.entities.Student;
@@ -7,19 +9,16 @@ import com.example.uniSystem_web_app.exceptions.StudentNotFoundException;
 import com.example.uniSystem_web_app.repositories.CourseRepository;
 import com.example.uniSystem_web_app.repositories.StudentRepository;
 import com.example.uniSystem_web_app.security.CustomUserDetails;
-import com.example.uniSystem_web_app.services.CourseService;
-import com.example.uniSystem_web_app.services.RecaptchaService;
-import com.example.uniSystem_web_app.services.SectionService;
-import com.example.uniSystem_web_app.services.StudentService;
+import com.example.uniSystem_web_app.services.*;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -30,15 +29,17 @@ public class StudentController {
     private final StudentService studentService;
     private final CourseService courseService;
     private final SectionService sectionService;
+    private final AccountService accountService;
     private final RecaptchaService recaptchaService;
     private final StudentRepository studentRepository;
     private final CourseRepository courseRepository;
 
     @Autowired
-    public StudentController(StudentService studentService , CourseService courseService, SectionService sectionService , RecaptchaService recaptchaService , CourseRepository courseRepository , StudentRepository studentRepository){
+    public StudentController(StudentService studentService , CourseService courseService, SectionService sectionService , AccountService accountService , RecaptchaService recaptchaService , CourseRepository courseRepository , StudentRepository studentRepository){
         this.studentService = studentService;
         this.courseService = courseService;
         this.sectionService = sectionService;
+        this.accountService = accountService;
         this.recaptchaService = recaptchaService;
         this.studentRepository = studentRepository;
         this.courseRepository = courseRepository;
@@ -51,10 +52,21 @@ public class StudentController {
         return studentRepository.findById(student.getId()).orElseThrow(() -> new StudentNotFoundException("Student not found."));
     }
 
+    private Account getLoggedInAccount(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        return accountService.getAccountWithId(userDetails.getAccount().getId());
+    }
+
     private String getLoggedInStudentEmail(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         return userDetails.getUsername();
+    }
+
+    private boolean didLoggedInStudentChangeInitPassword(){
+        Account account = getLoggedInAccount();
+        return account.getPasswordChanged();
     }
 
     public void addSection(Student student , Section section){
@@ -63,9 +75,18 @@ public class StudentController {
     }
 
     @GetMapping("/studentUI")
-    public String studentUI(Model model){
+    public String studentUI(
+            @RequestParam(required = false) String passwordChangeSuccess
+            , @RequestParam(required = false) String passwordsDoNotMatch
+            , Model model
+    ){
         Student student = getLoggedInStudent();
         model.addAttribute("student" , student);
+        model.addAttribute("changedInitPassword" , didLoggedInStudentChangeInitPassword());
+        if(!didLoggedInStudentChangeInitPassword()) model.addAttribute("newPasswordDTO" , new NewPasswordDTO());
+        if(passwordChangeSuccess != null) model.addAttribute("passwordChangeSuccess" , passwordChangeSuccess);
+        if(passwordsDoNotMatch != null) model.addAttribute("passwordsDoNotMatch" , passwordsDoNotMatch);
+
         return "/indices/student/studentUI.html";
     }
 
@@ -150,6 +171,20 @@ public class StudentController {
             if(SECTION.getTimePeriod().getId() == section.getTimePeriod().getId()) return true;
         }
         return false;
+    }
+
+    @PostMapping("/changeStudentPassword")
+    public String changeStudentPassword(@Valid NewPasswordDTO newPasswordDTO , BindingResult bindingResult , Model model){
+        Account account = getLoggedInAccount();
+        if(!bindingResult.hasErrors()){
+            boolean changePassword = accountService.changePassword(account , newPasswordDTO);
+            if(changePassword) return "redirect:/student/studentUI?passwordChangeSuccess";
+            else return "redirect:/student/studentUI?passwordsDoNotMatch";
+        }
+        Student student = getLoggedInStudent();
+        model.addAttribute("student" , student);
+        model.addAttribute("changedInitPassword" , didLoggedInStudentChangeInitPassword());
+        return "/indices/student/studentUI.html";
     }
 
 }

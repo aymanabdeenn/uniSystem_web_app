@@ -39,6 +39,11 @@ body {
     font-size: 24px;
 }
 
+.errorText{
+    font-family: monospace;
+    color: #FF0000;
+}
+
 .formContainer {
     width: 80%;
     height: 80%;

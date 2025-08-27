@@ -33,6 +33,11 @@ public class Account {
     )
     String password;
 
+    @Column(
+            nullable = false
+    )
+    boolean passwordChanged = false;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "accounts_roles",
@@ -100,6 +105,14 @@ public class Account {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean getPasswordChanged() {
+        return passwordChanged;
+    }
+
+    public void setPasswordChanged(boolean passwordChanged) {
+        this.passwordChanged = passwordChanged;
     }
 
     public List<Role> getRoles() {

@@ -4,8 +4,6 @@ import com.example.uniSystem_web_app.exceptions.*;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.sql.SQLIntegrityConstraintViolationException;
-
 @ControllerAdvice
 public class Advisor {
 
@@ -20,21 +18,26 @@ public class Advisor {
     }
 
     @ExceptionHandler(DoctorNotFoundException.class)
-    public void DoctorDoesNotExist(DoctorNotFoundException ex){
+    public void doctorDoesNotExist(DoctorNotFoundException ex){
         System.out.println(ex.getMessage());
     }
     @ExceptionHandler(SectionNotFoundException.class)
-    public void SectionDoesNotExist(SectionNotFoundException ex){
+    public void sectionDoesNotExist(SectionNotFoundException ex){
         System.out.println(ex.getMessage());
     }
 
     @ExceptionHandler(FacultyNotFoundException.class)
-    public void FacultyNotFound(FacultyNotFoundException ex){
+    public void facultyNotFound(FacultyNotFoundException ex){
         System.out.println(ex.getMessage());
     }
 
     @ExceptionHandler(TimePeriodNotFoundException.class)
-    public void TimePeriodNotFound(TimePeriodNotFoundException ex){
+    public void timePeriodNotFound(TimePeriodNotFoundException ex){
+        System.out.println(ex.getMessage());
+    }
+
+    @ExceptionHandler(AccountNotFoundException.class)
+    public void accountNotFound(AccountNotFoundException ex) {
         System.out.println(ex.getMessage());
     }
 

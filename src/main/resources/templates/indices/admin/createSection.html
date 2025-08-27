@@ -11,10 +11,13 @@
   <form class="form searchForm" method="GET" th:action="@{/admin/getCoursesToCreateSection}">
     <div class="field">
       <label class="text">Faculty</label>
-      <select name="faculty">
-        <option value="" disabled selected>---------------------</option>
-        <option th:each="faculty : ${faculties}" th:value="${faculty.id}" th:text="${faculty.name}"></option>
-      </select>
+      <div class="inputContainer">
+        <select id="faculty" name="faculty">
+          <option value="" disabled selected>---------------------</option>
+          <option th:each="faculty : ${faculties}" th:value="${faculty.id}" th:text="${faculty.name}"></option>
+        </select>
+        <h3 class="errorText" id="errorFaculty"></h3>
+      </div>
     </div>
     <button type="submit" class="btn">Search</button>
   </form>
@@ -22,25 +25,37 @@
     <div class="fields">
       <div class="field">
         <label class="text">Course</label>
-        <select name="courseId">
-          <option value="" disabled selected>---------------------</option>
-          <option th:each="course : ${courses}" th:value="${course.courseId}" th:text="${course.courseName}"></option>
-        </select>
+        <div class="inputContainer">
+          <select id="courseId" name="courseId">
+            <option value="" disabled selected>---------------------</option>
+            <option th:each="course : ${courses}" th:value="${course.courseId}" th:text="${course.courseName}"></option>
+          </select>
+          <h3 class="errorText" id="errorCourseId"></h3>
+        </div>
       </div>
       <div class="field">
         <label class="text">Time Period</label>
-        <select name="timePeriodId">
-          <option value="" disabled selected>---------------------</option>
-          <option th:each="timePeriod : ${timePeriods}" th:value="${timePeriod.id}" th:text="${timePeriod.toString}"></option>
-        </select>
+        <div class="inputContainer">
+          <select id="timePeriod" name="timePeriodId">
+            <option value="" disabled selected>---------------------</option>
+            <option th:each="timePeriod : ${timePeriods}" th:value="${timePeriod.id}" th:text="${timePeriod.toString}"></option>
+          </select>
+          <h3 class="errorText" id="errorTimePeriod"></h3>
+        </div>
+
       </div>
       <div class="field">
         <label class="text">Capacity</label>
-        <input type="text" name="capacity"/>
+        <div class="inputContainer">
+          <input type="text" id="capacity" name="capacity"/>
+          <h3 class="errorText" id="errorCapacity"></h3>
+        </div>
+
       </div>
     </div>
     <button type="submit" class="btn">Create</button>
   </form>
 </div>
+<script th:src="@{/scripts/scriptAdmin/scriptCreateCourse.js}"></script>
 </body>
 </html>
