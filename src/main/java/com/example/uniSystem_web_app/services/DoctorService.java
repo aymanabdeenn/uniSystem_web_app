@@ -27,10 +27,10 @@ public class DoctorService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public Doctor createNewDoctor(String uniId, String name, LocalDate dob , Long facultyId , String username , String password){
+    public Doctor createNewDoctor(String uniId, String name, LocalDate dob , Long facultyId , String username){
         Faculty faculty = facultyRepository.findById(facultyId).orElseThrow(() -> new FacultyNotFoundException("Faculty not found"));
         Doctor doctor = new Doctor(uniId , name , dob , faculty);
-        acs.registerDoctor(username , passwordEncoder.encode(password) , doctor);
+        acs.registerDoctor(username , passwordEncoder.encode(name+username) , doctor);
         return doctor;
     }
 

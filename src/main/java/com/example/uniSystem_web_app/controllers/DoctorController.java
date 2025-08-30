@@ -1,19 +1,23 @@
 package com.example.uniSystem_web_app.controllers;
 
 import com.example.uniSystem_web_app.dto.AttendanceFormDTO;
+import com.example.uniSystem_web_app.dto.NewPasswordDTO;
 import com.example.uniSystem_web_app.dto.StudentAttendanceDTO;
 import com.example.uniSystem_web_app.entities.*;
 import com.example.uniSystem_web_app.exceptions.DoctorNotFoundException;
 import com.example.uniSystem_web_app.repositories.DoctorRepository;
 import com.example.uniSystem_web_app.security.CustomUserDetails;
+import com.example.uniSystem_web_app.services.AccountService;
 import com.example.uniSystem_web_app.services.AttendanceService;
 import com.example.uniSystem_web_app.services.CourseService;
 import com.example.uniSystem_web_app.services.SectionService;
+import jakarta.validation.Valid;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLOutput;
@@ -28,12 +32,14 @@ public class DoctorController {
     private final CourseService courseService;
     private final SectionService sectionService;
     private final AttendanceService attendanceService;
+    private final AccountService accountService;
     private final DoctorRepository doctorRepository;
 
-    public DoctorController(CourseService courseService , SectionService sectionService , AttendanceService attendanceService , DoctorRepository doctorRepository){
+    public DoctorController(CourseService courseService , SectionService sectionService , AttendanceService attendanceService , AccountService accountService , DoctorRepository doctorRepository){
         this.courseService = courseService;
         this.sectionService = sectionService;
         this.attendanceService = attendanceService;
+        this.accountService = accountService;
         this.doctorRepository = doctorRepository;
     }
 
@@ -50,6 +56,17 @@ public class DoctorController {
         return userDetails.getUsername();
     }
 
+    private Account getLoggedInAccount(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        return accountService.getAccountWithId(userDetails.getAccount().getId());
+    }
+
+    private boolean didLoggedInDoctorChangeInitPassword(){
+        Account account = getLoggedInAccount();
+        return account.getPasswordChanged();
+    }
+
     public boolean isFutureDate(LocalDate date){
         return date.isAfter(LocalDate.now());
     }
@@ -59,9 +76,18 @@ public class DoctorController {
     }
 
     @GetMapping("/doctorUI")
-    public String doctorUI(Model model){
+    public String doctorUI(
+            Model model
+            , @RequestParam(required = false) String passwordChangeSuccess
+            , @RequestParam(required = false) String passwordsDoNotMatch
+
+    ){
         Doctor doctor = getLoggedInDoctor();
         model.addAttribute("doctor" , doctor);
+        model.addAttribute("changedInitPassword" , didLoggedInDoctorChangeInitPassword());
+        if(!didLoggedInDoctorChangeInitPassword()) model.addAttribute("newPasswordDTO" , new NewPasswordDTO());
+        if(passwordChangeSuccess != null) model.addAttribute("passwordChangeSuccess" , passwordChangeSuccess);
+        if(passwordsDoNotMatch != null) model.addAttribute("passwordsDoNotMatch" , passwordsDoNotMatch);
         return "/indices/doctor/doctorUI";
     }
 
@@ -135,5 +161,19 @@ public class DoctorController {
         else attendanceService.modifyAttendanceList(attendanceFormDTO , attendance , courseId , date);
 
         return "redirect:/doctor/attendanceForm";
+    }
+
+    @PostMapping("/changeDoctorPassword")
+    public String changeStudentPassword(@Valid NewPasswordDTO newPasswordDTO , BindingResult bindingResult , Model model){
+        Account account = getLoggedInAccount();
+        if(!bindingResult.hasErrors()){
+            boolean changePassword = accountService.changePassword(account , newPasswordDTO);
+            if(changePassword) return "redirect:/doctor/doctorUI?passwordChangeSuccess";
+            else return "redirect:/doctor/doctorUI?passwordsDoNotMatch";
+        }
+        Doctor doctor = getLoggedInDoctor();
+        model.addAttribute("doctor" , doctor);
+        model.addAttribute("changedInitPassword" , didLoggedInDoctorChangeInitPassword());
+        return "/indices/doctor/doctorUI.html";
     }
 }

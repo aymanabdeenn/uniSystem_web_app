@@ -7,6 +7,35 @@
     <link rel="stylesheet" th:href="@{/styles/styleDoctor/styleDoctorUI.css}" />
   </head>
   <body>
+  <div class="messageContainer" th:if="${changedInitPassword == false || passwordChangeSuccess != null}">
+    <div class="message" th:if="${changedInitPassword == false}">
+      <h2 class="messageTitle text"
+      > Change your password before proceeding.
+      </h2>
+      <form class="messageContent" method="POST" th:object="${newPasswordDTO}" th:action="@{/doctor/changeDoctorPassword}">
+        <div class="field">
+          <label class="text">New password</label>
+          <input class="passwordInput" type="password" th:field="*{newPassword}"/>
+          <h3 th:if="${#fields.hasErrors('newPassword')}" th:errors="*{newPassword}" class="errorText"></h3>
+        </div>
+        <div class="field">
+          <label class="text">Confirm new password</label>
+          <input class="passwordInput" type="password" th:field="*{rePassword}"/>
+          <h3 th:if="${#fields.hasErrors('rePassword')}" th:errors="*{rePassword}" class="errorText"></h3>
+          <h3 th:if="${passwordsDoNotMatch != null}" class="errorText">Passwords do not match.</h3>
+        </div>
+        <button class="changeBtn" type="submit">Change</button>
+      </form>
+    </div>
+    <!--    -->
+    <div class="notification" th:if="${passwordChangeSuccess != null}">
+      <div class="exitButton"><img draggable="false" th:src="@{/images/closeIcon.png}"/></div>
+      <h2 class="notificationTitle text"
+      > Operation Succeeded
+      </h2>
+      <div class="notificationContent text" th:text="'The password has been changed successfully.'"></div>
+    </div>
+  </div>
     <div class="sidebar">
       <div class="nameCard">
         <p class="doctorName name">Dr.</p>

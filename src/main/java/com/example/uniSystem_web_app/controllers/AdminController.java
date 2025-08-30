@@ -127,13 +127,11 @@ public class AdminController {
             , @RequestParam(name = "faculty") Long facultyId
             , @RequestParam LocalDate dob
             , @RequestParam(name = "email") String username
-            , @RequestParam String password
     ){
         if(name.isEmpty()) return "redirect:/admin/adminUI?nameEmpty";
         if(uniId.isEmpty()) return "redirect:/admin/adminUI?uniIdEmpty";
         if(username.isEmpty()) return "redirect:/admin/adminUI?emailEmpty";
-        if(password.isEmpty()) return "redirect:/admin/adminUI?passwordEmpty";
-        doctorService.createNewDoctor(uniId , name , dob , facultyId , username , password);
+        doctorService.createNewDoctor(uniId , name , dob , facultyId , username);
         return "redirect:/admin/adminUI?success";
     }
 
