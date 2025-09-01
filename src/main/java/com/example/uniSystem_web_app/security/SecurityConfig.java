@@ -49,6 +49,7 @@ public class SecurityConfig {
     @Order(2)
     public SecurityFilterChain userChain(HttpSecurity http) throws Exception{
         http
+                .csrf(csrf -> csrf.disable())
                 .userDetailsService(customUserDetailsService)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/images/**").permitAll()

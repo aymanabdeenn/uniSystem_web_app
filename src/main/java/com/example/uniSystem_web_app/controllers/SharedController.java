@@ -51,4 +51,9 @@ public class SharedController {
         model.addAttribute("courseHandlerPath" , courseHandlerPath);
         return "/indices/shared/myCourses";
     }
+
+    @GetMapping("/chatroom")
+    public String showChatroom(){
+        return "/indices/shared/AIChatroom.html";
+    }
 }
