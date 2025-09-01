@@ -53,7 +53,22 @@ public class SharedController {
     }
 
     @GetMapping("/chatroom")
-    public String showChatroom(){
+    public String showChatroom(Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        boolean isStudent = authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_STUDENT"));
+        boolean isDoctor = authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_DOCTOR"));
+        if(isStudent){
+            Student student = studentRepository.findById(userDetails.getStudent().getId()).orElseThrow(() -> new StudentNotFoundException("The student does not exist."));
+            model.addAttribute("userType" , "student");
+            model.addAttribute("student" , student);
+        }
+        else if(isDoctor){
+            Doctor doctor = doctorRepository.findById(userDetails.getDoctor().getId()).orElseThrow(() -> new DoctorNotFoundException("The doctor does not exist."));
+            model.addAttribute("userType" , "doctor");
+            model.addAttribute("doctor" , doctor);
+        }
+
         return "/indices/shared/AIChatroom.html";
     }
 }

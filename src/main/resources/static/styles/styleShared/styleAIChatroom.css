@@ -1,0 +1,253 @@
+:root {
+  --primary-color: #eaeffb;
+  --secondary-color: #182e65;
+  --tertiary-color: #2d5ed2;
+  --text-color: #333;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--primary-color);
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text {
+  color: var(--primary-color);
+  font-size: 16px;
+  line-height: 1.5;
+  font-family: monospace;
+}
+
+.errorText{
+    color: #FF0000;
+    font-size: 16px;
+    font-family: monospace;
+}
+
+.hidden{
+    display: none !important;
+}
+
+/*SIDEBAR */
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background-color: var(--secondary-color);
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding: 20px;
+  border-radius: 0 10px 10px 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.nameCard {
+  padding: 20px;
+  border: 2px solid var(--primary-color);
+  border-radius: 5px;
+  background-color: var(--tertiary-color);
+}
+
+.name {
+  display: inline-block;
+  color: var(--primary-color);
+  font-size: 24px;
+  font-weight: bold;
+  font-family: monospace;
+  margin-bottom: 10px;
+}
+
+.facultyName {
+  display: inline-block;
+  color: var(--primary-color);
+  font-size: 12px;
+  font-family: monospace;
+}
+
+.choices {
+}
+
+.choice {
+  display: block;
+  padding: 15px;
+  font-family: monospace;
+  font-size: 18px;
+
+  color: var(--primary-color);
+  text-decoration: none;
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.choice:hover {
+  background-color: var(--primary-color);
+  border-radius: 0 5px 5px 0;
+  color: var(--primary-color);
+  cursor: pointer;
+  transition: background-color 0.5s ease, color 0.5s ease;
+  background: linear-gradient(
+    to left,
+    var(--tertiary-color),
+    var(--secondary-color)
+  );
+  /* border-bottom: none; */
+}
+
+.logout {
+  display: block;
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+  /* padding: 10px; */
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: monospace;
+}
+
+.logoutButton {
+  border: none;
+  background-color: var(--secondary-color);
+  width: 100%;
+  height: 100%;
+  text-align: left;
+  border-radius: 10px;
+}
+
+.logoutButton:hover {
+  background: linear-gradient(
+    to left,
+    var(--tertiary-color),
+    var(--secondary-color)
+  );
+  color: var(--primary-color);
+  box-shadow: 15px 0 50px var(--primary-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: box-shadow 0.3s ease;
+  border-radius: 10px;
+}
+/* END OF SIDEBAR */
+/*CHAT CONTAINER*/
+.container {
+  height: 100vh;
+  width: calc(100% - 250px);
+  margin-left: 250px; /* Adjusted to account for sidebar width */
+  padding: 20px;
+  background-color: var(--primary-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chat-container{
+    height: 95%;
+    width: 75%;
+    background-color: var(--secondary-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    border-radius: 10px;
+    padding: 50px;
+    gap: 15px;
+}
+
+.user-input-container{
+    width: 85%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    border-top: 2px solid var(--primary-color);
+    padding-top: 25px;
+}
+
+#chatInput{
+    border-radius: 10px;
+    width: 75%;
+    height: 50px;
+    border: none;
+    padding: 15px;
+}
+
+#sendBtn{
+    border-radius: 50%;
+    border: none;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#sendBtn:hover{
+    background-color: silver;
+    transition: backgroundColor 0.3 ease;
+}
+
+#empty-card {
+    padding: 25px;
+    color: var(--tertiary-color);
+    background-color: var(--primary-color);
+    border-radius: 10px;
+    border: none;
+    width: 500px;
+    height: 150px;
+    font-size: 24px;
+    font-family: monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#chatMessages{
+    border-radius: 10px;
+    border: none;
+    height: 80%;
+    width: 85%;
+    padding: 15px;
+    max-height: 800px;
+    overflow: auto;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;     /* Firefox */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#chatMessages::-webkit-scrollbar {
+    display: none;             /* Chrome, Safari, Opera */
+}
+
+.user-message{
+    background-color: var(--tertiary-color);
+    color: var(--primary-color);
+    padding: 15px;
+    border-radius: 10px;
+    font-family: monospace;
+    font-size: 18px;
+    margin-bottom: 25px;
+    margin-left: 50%;
+}
+
+.ai-message{
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    padding: 15px;
+    border-radius: 10px;
+    font-family: monospace;
+    font-size: 18px;
+    margin-bottom: 25px;
+    margin-right: 50%;
+}
+
+/*END OF CHAT CONTAINER*/

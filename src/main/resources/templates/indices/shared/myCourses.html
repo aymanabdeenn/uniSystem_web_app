@@ -24,6 +24,7 @@
       <a class="choice" th:href="${userType == 'student'} ? @{/student/showRegisterMenu} : @{/doctor/attendanceForm}"
       th:text="${userType == 'student'} ? 'Register' : 'Attendance'"></a
       >
+      <a class="choice" th:href="@{/shared/chatroom}">Chat with AI</a>
     </div>
     <form class="logout" method="POST" th:action="@{/logout}">
       <button class="logoutButton choice">Logout</button>

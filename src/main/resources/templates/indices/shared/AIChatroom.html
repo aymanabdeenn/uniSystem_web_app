@@ -3,26 +3,44 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-      }
-    </style>
+    <title>AIChatroom</title>
+    <link rel="stylesheet" th:href="@{/styles/styleShared/styleAIChatroom.css}" />
   </head>
   <body>
-    <div class="chat-container">
-      <div id="chatMessages" class="chat-messages"></div>
-      <input type="text" id="chatInput" placeholder="Type your message..." />
-      <button id="sendBtn">Send</button>
+  <div class="sidebar">
+    <div class="nameCard">
+      <p class="name" th:if="${userType == 'doctor'}">Dr.</p>
+      <p class="name" th:text="${userType == 'student'} ? ${student.name} : ${doctor.name}"></p>
+      <br>
+      <p class="facultyName">Faculty of</p>
+      <p class="facultyName" th:text="${userType == 'student'} ? ${student.faculty.name} : ${doctor.faculty.name}"></p>
     </div>
-    <script th:src="@{/scripts/scriptShared/scriptAIChatroom.js}"></script>
+    <div class="choices">
+      <a class="choice" th:href="${userType == 'student'} ? @{/student/studentUI} : @{/doctor/doctorUI}">Home</a>
+      <a class="choice" th:href="${userType == 'student'} ? @{/student/showPersonalInformation} : @{/doctor/personalInformation}"
+      >Personal Information</a
+      >
+      <a class="choice" th:href="@{/shared/showMyCourses}">My Courses</a>
+      <a class="choice" th:href="${userType == 'student'} ? @{/student/showRegisterMenu} : @{/doctor/attendanceForm}"
+         th:text="${userType == 'student'} ? 'Register' : 'Attendance'"></a
+      >
+      <a class="choice" th:href="@{/shared/chatroom}">Chat with AI</a>
+    </div>
+    <form class="logout" method="POST" th:action="@{/logout}">
+      <button class="logoutButton choice">Logout</button>
+    </form>
+  </div>
+  <div class="container">
+    <div class="chat-container">
+      <div id="chatMessages" class="chat-messages">
+        <div id="empty-card">Chat with the AI.</div>
+      </div>
+      <div class="user-input-container">
+        <input type="text" id="chatInput" placeholder="Type your message..." />
+        <button id="sendBtn"><img th:src="@{/images/sendIcon.png}"></button>
+      </div>
+    </div>
+  </div>
+  <script th:src="@{/scripts/scriptShared/scriptAIChatroom.js}"></script>
   </body>
 </html>
