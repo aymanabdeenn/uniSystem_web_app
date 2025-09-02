@@ -134,53 +134,70 @@ body {
   padding: 20px;
   background-color: var(--primary-color);
   display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.courseList {
-  width: 100%;
-  height: 100%;
-  margin-left: 25px;
-}
-
-.courseCard {
-  display: inline-block;
-  padding: 20px;
-  border-radius: 10px;
-  border: 2px solid var(--secondary-color);
-  margin: 20px;
-  width: 30%;
-  height: 35%;
-  min-width: 300px;
-  text-decoration: none;
-  color: var(--secondary-color);
-  transition: transform 0.2s ease-in-out;
-}
-
-.courseCard:hover{
-    transform: scale(1.05);
-}
-
-.courseName , .courseNumber , .sectionNumber{
-    display: inline-block;
-}
-
-.cardContent {
-  display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 50px;
-  height: 100%;
+  align-items: center;
+  gap: 25px;
 }
 
-.courseBackground {
-  width: 100%;
-  height: 150px;
-  background-color: var(--secondary-color);
-  border-radius: 5px;
-  position: relative;
-  border: 2px solid var(--secondary-color);
+.title{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    width: 85%;
+    border-bottom: 2px solid var(--secondary-color);
+}
+
+.courseName{
+    font-family: monospace;
+    color: var(--secondary-color);
+}
+
+.sectionNumber{
+    font-family: monospace;
+    color: var(--tertiary-color);
+}
+
+.announcements-container{
+    flex:1;
+    width: 100%;
+    overflow: auto;
+    margin-top: 15px;
+}
+
+.announcement{
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    width: 95%;
+    padding: 10px;
+    margin: 15px;
+    border-radius: 10px;
+}
+
+.announcement-top-bar{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#displayBtn{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border:none;
+    background-color: var(--primary-color);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.content{
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    padding: 15px;
+    opacity: 0;
 }
 /* END OF CONTAINER */

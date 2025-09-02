@@ -130,8 +130,8 @@ public class Student {
         List<Course> courses = new ArrayList<Course>();
         HashSet<Course> set = new HashSet<Course>();
         for(Section section : this.sections){
+            if(!set.contains(section.getCourse())) courses.add(section.getCourse());
             set.add(section.getCourse());
-            courses.add(section.getCourse());
         }
         return courses;
     }

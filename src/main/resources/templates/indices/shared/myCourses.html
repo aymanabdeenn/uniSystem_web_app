@@ -32,14 +32,18 @@
   </div>
     <div class="container">
       <div class="courseList">
-        <a class="courseCard" th:each="course : ${ (userType == 'student') ? student.getCourses() : doctor.getCourses() }" th:href="@{${courseHandlerPath}(id=${course.courseId})}">
+        <a class="courseCard" th:each="section : ${ (userType == 'student') ? student.getSections() : doctor.getSections() }" th:href="@{/shared/showCourse(id=${section.id})}">
           <div class="cardContent">
             <div class="courseBackground"></div>
             <div class="courseInfo">
               <p class="courseName text">Course Name: </p>
-              <p class="courseName text" th:text="${course.courseName}"></p>
+              <p class="courseName text" th:text="${section.course.courseName}"></p>
+              <br>
               <p class="courseNumber text">Course Number: </p>
-              <p class="courseNumber text" th:text="${course.courseId}"></p>
+              <p class="courseNumber text" th:text="${section.course.courseId}"></p>
+              <br>
+              <p class="sectionNumber text">Section Number: </p>
+              <p class="sectionNumber text" th:text="${section.id}"></p>
             </div>
           </div>
         </a>

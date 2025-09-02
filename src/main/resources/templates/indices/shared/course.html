@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Course</title>
+    <link rel="stylesheet" th:href="@{/styles/styleShared/styleCourse.css}" />
+</head>
+<body>
+<div class="sidebar">
+    <div class="nameCard">
+        <p class="name" th:if="${userType == 'doctor'}">Dr.</p>
+        <p class="name" th:text="${userType == 'student'} ? ${student.name} : ${doctor.name}"></p>
+        <br>
+        <p class="facultyName">Faculty of</p>
+        <p class="facultyName" th:text="${userType == 'student'} ? ${student.faculty.name} : ${doctor.faculty.name}"></p>
+    </div>
+    <div class="choices">
+        <a class="choice" th:href="${userType == 'student'} ? @{/student/studentUI} : @{/doctor/doctorUI}">Home</a>
+        <a class="choice" th:href="${userType == 'student'} ? @{/student/showPersonalInformation} : @{/doctor/personalInformation}"
+        >Personal Information</a
+        >
+        <a class="choice" th:href="@{/shared/showMyCourses}">My Courses</a>
+        <a class="choice" th:href="${userType == 'student'} ? @{/student/showRegisterMenu} : @{/doctor/attendanceForm}"
+           th:text="${userType == 'student'} ? 'Register' : 'Attendance'"></a
+        >
+        <a class="choice" th:href="@{/shared/chatroom}">Chat with AI</a>
+    </div>
+    <form class="logout" method="POST" th:action="@{/logout}">
+        <button class="logoutButton choice">Logout</button>
+    </form>
+</div>
+<div class="container">
+    <div class="title">
+        <h1 class="courseName" th:text="${section.course.courseName}"></h1>
+        <h2 class="sectionNumber" th:text="'Section (' + ${section.sectionNumber} + ')'"></h2>
+    </div>
+    <div class="announcements-container">
+        <div class="announcement">
+            <div class="top-bar-announcement">
+                <div class="announcement-top-bar">
+                    <h3 class="announcement-title">Announcement 1</h3>
+                    <button id="displayBtn">&</button>
+                </div>
+                <div class="content">
+                    <h3>test</h3>
+                    <h3>test</h3>
+                    <h3>test</h3>
+                </div>
+            </div>
+        </div>
+        <div class="element">test</div>
+        <div class="element">end</div>
+    </div>
+</div>
+<script th:src="@{/scripts/scriptShared/scriptCourse.js}"></script>
+</body>
+</html>

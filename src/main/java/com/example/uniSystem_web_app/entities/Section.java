@@ -3,6 +3,7 @@ package com.example.uniSystem_web_app.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -44,6 +45,9 @@ public class Section {
     @ManyToOne
     @JoinColumn(name = "time_period_id")
     private TimePeriod timePeriod;
+
+    @OneToMany(mappedBy = "section" , cascade = CascadeType.ALL , orphanRemoval = true)
+    private List<Announcement> announcements = new ArrayList<>();
 
     public Section(){}
 
@@ -120,6 +124,14 @@ public class Section {
     public TimePeriod getTimePeriod(){ return timePeriod; }
 
     public void setTimePeriod(TimePeriod timePeriod){ this.timePeriod = timePeriod; }
+
+    public List<Announcement> getAnnouncements() {
+        return announcements;
+    }
+
+    public void setAnnouncements(List<Announcement> announcements) {
+        this.announcements = announcements;
+    }
 
     public int numOfStudents(){
         return this.students.size();
