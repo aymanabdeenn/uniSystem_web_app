@@ -51,6 +51,7 @@ public class AdminController {
             , @RequestParam(required = false) String facultyEmpty
             , @RequestParam(required = false) String courseNotFound
             , @RequestParam(required = false) String timePeriodExists
+            , @RequestParam(required = false) String AssigningFailed
             , @RequestParam(required = false) String success
     ){
         if(courseNameEmpty != null) model.addAttribute("courseNameEmpty" , courseNameEmpty);
@@ -62,6 +63,7 @@ public class AdminController {
         if(passwordEmpty != null) model.addAttribute("passwordEmpty" , passwordEmpty);
         if(courseNotFound != null) model.addAttribute("courseNotFound" , courseNotFound);
         if(timePeriodExists != null) model.addAttribute("timePeriodExists" , timePeriodExists);
+        if(AssigningFailed != null) model.addAttribute("AssigningFailed" , AssigningFailed);
         if(success != null) model.addAttribute("success" , success);
         return "/indices/admin/adminUI.html";
     }
@@ -178,7 +180,7 @@ public class AdminController {
             , @RequestParam Long doctorId
             , @RequestParam Long sectionId
     ){
-        adminService.assignDoctorToSection(doctorId , sectionId);
+        if(!adminService.assignDoctorToSection(doctorId , sectionId)) return "redirect:/admin/adminUI?AssigningFailed";
         return "redirect:/admin/adminUI?success";
     }
 

@@ -16,10 +16,12 @@ body {
   background-color: var(--primary-color);
   color: #333;
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   height: 100vh;
   width: 100vw;
+  overflow: hidden;
 }
 
 .text{
@@ -32,13 +34,53 @@ body {
     display: none !important;
 }
 
+.top-bar{
+    background-color: var(--secondary-color);
+    width: 100%;
+    height: 15%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.logoutButton{
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    border: none;
+    margin-right: 25px;
+    font-family: monospace;
+    font-size: 18px;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 35px;
+}
+
+.logoutButton:hover{
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    transition: background-color 0.3s ease , color 0.3s ease;
+}
+
+.container{
+    width: 100%;
+    height: 85%;
+}
+
 .choices{
-    width: 80%;
-    height: 75%;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
 }
 
 .choice{
-    width: 300px;
+    width: 250px;
     height: 50px;
     background-color: var(--secondary-color);
     color: var(--primary-color);
@@ -46,13 +88,28 @@ body {
     font-size: 18px;
     border-radius: 10px;
     text-decoration: none;
-    display: inline-block;
-    text-align: center;
-    margin: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 35px;
 }
 
 .choice:hover{
     background-color: var(--tertiary-color);
+}
+
+.choices-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 25px;
+    border-left: 2px solid var(--secondary-color);
+    padding: 25px;
+    height: 75%;
+}
+
+.choices-container:first-child{
+    border-left: none;
 }
 
 .messageContainer{

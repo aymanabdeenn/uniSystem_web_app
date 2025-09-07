@@ -7,6 +7,32 @@
     <link rel="stylesheet" th:href="@{/styles/styleShared/styleCourse.css}" />
 </head>
 <body>
+<div class="messageContainer" th:if="${createAnnouncement != null || announcementAdded != null}">
+    <div class="message" th:if="${createAnnouncement != null}">
+        <form class="messageContent" method="POST" th:action="@{/shared/createAnnouncement}" enctype="multipart/form-data">
+            <div class="field">
+                <label class="text">Title</label>
+                <input class="input" type="text" name="title"/>
+            </div>
+            <div class="field">
+                <label class="text">Content</label>
+                <textarea name="content" rows="4" cols="50" placeholder="Type your message..."></textarea>
+            </div>
+            <div class="field">
+                <div class="drop-zone" id="dropZone">
+                    <p class="text">Drag & drop files here or</p>
+                    <label for="fileInput" class="custom-file-label">Browse</label>
+                    <input type="file" id="fileInput" class="hidden-input input" name="files" multiple/>
+                </div>
+                <div id="filesNames"></div>
+            </div>
+            <input type="hidden" name="sectionId" th:value="${section.id}"/>
+            <input type="hidden" name="doctorId" th:value="${doctor.id}"/>
+            <button class="createBtn" type="submit">Create</button>
+        </form>
+    </div>
+</div>
+    <!--    -->
 <div class="sidebar">
     <div class="nameCard">
         <p class="name" th:if="${userType == 'doctor'}">Dr.</p>
@@ -31,26 +57,29 @@
     </form>
 </div>
 <div class="container">
+    <form class="addForm" method="GET" th:action="@{/shared/showCreateAnnouncement}">
+        <input type="hidden" name="id" th:value="${section.id}"/>
+        <button th:if="${userType == 'doctor'}" id="addBtn" type="submit"><img th:src="@{/images/addIcon.png}"/> New</button>
+    </form>
     <div class="title">
         <h1 class="courseName" th:text="${section.course.courseName}"></h1>
         <h2 class="sectionNumber" th:text="'Section (' + ${section.sectionNumber} + ')'"></h2>
     </div>
-    <div class="announcements-container">
-        <div class="announcement">
-            <div class="top-bar-announcement">
+    <h2 class="text" th:if="${announcements.isEmpty()}">No announcements have been made yet.</h2>
+    <div class="announcements-container" th:if="${announcements.size() > 0}">
+        <div class="announcement" th:each="announcement : ${announcements}">
                 <div class="announcement-top-bar">
-                    <h3 class="announcement-title">Announcement 1</h3>
-                    <button id="displayBtn">&</button>
+                    <h3 class="announcement-title" th:text="${announcement.title}"></h3>
+                    <button class="displayBtn"><img th:src="@{/images/arrowDownIcon.png}"/></button>
                 </div>
                 <div class="content">
-                    <h3>test</h3>
-                    <h3>test</h3>
-                    <h3>test</h3>
+                    <h4 class="text" th:text="${announcement.content}"></h4>
+                    <h4 class="text" id="attachedFilesText">Attached files:</h4>
+                    <ul class="links" th:if="${#lists.size(announcement.files) > 0}">
+                        <li><a class="link" th:each="file : ${announcement.files}" th:href="@{/shared/announcements/files/{id}(id=${file.id})}" th:text="${file.fileName}"></a></li>
+                    </ul>
                 </div>
-            </div>
         </div>
-        <div class="element">test</div>
-        <div class="element">end</div>
     </div>
 </div>
 <script th:src="@{/scripts/scriptShared/scriptCourse.js}"></script>

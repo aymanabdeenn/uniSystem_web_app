@@ -2,6 +2,7 @@ package com.example.uniSystem_web_app.services;
 
 import com.example.uniSystem_web_app.entities.Doctor;
 import com.example.uniSystem_web_app.entities.Faculty;
+import com.example.uniSystem_web_app.exceptions.DoctorNotFoundException;
 import com.example.uniSystem_web_app.exceptions.FacultyNotFoundException;
 import com.example.uniSystem_web_app.repositories.DoctorRepository;
 import com.example.uniSystem_web_app.repositories.FacultyRepository;
@@ -25,6 +26,10 @@ public class DoctorService {
         this.facultyRepository = facultyRepository;
         this.doctorRepository = doctorRepository;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    public Doctor getDoctorById(Long id){
+        return doctorRepository.findById(id).orElseThrow(() -> new DoctorNotFoundException("Doctor not found."));
     }
 
     public Doctor createNewDoctor(String uniId, String name, LocalDate dob , Long facultyId , String username){

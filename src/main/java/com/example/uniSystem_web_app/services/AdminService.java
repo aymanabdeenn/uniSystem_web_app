@@ -31,12 +31,14 @@ public class AdminService {
         this.sectionRepository = sectionRepository;
     }
 
-    public void assignDoctorToSection(Long doctorId , Long sectionId){
+    public boolean assignDoctorToSection(Long doctorId , Long sectionId){
         Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> new DoctorNotFoundException("Doctor not found."));
         Section section = sectionRepository.findById(sectionId).orElseThrow(() -> new SectionNotFoundException("Section not found."));
+        for(Section SECTION : doctor.getSections()) if(SECTION.getId() == sectionId) return false;
         section.setAssignedDoctor(doctor);
         doctor.getSections().add(section);
         doctorRepository.save(doctor);
+        return true;
     }
 
 }

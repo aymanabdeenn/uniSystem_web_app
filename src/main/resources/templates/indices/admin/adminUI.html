@@ -6,22 +6,39 @@
     <link rel="stylesheet" th:href="@{/styles/styleAdmin/styleAdminUI.css}"/>
 </head>
 <body>
-    <div class="messageContainer" th:if="${success != null || nameEmpty != null || uniIdEmpty != null || emailEmpty != null || passwordEmpty != null || courseNameEmpty != null || courseIdEmpty != null || facultyEmpty != null || courseNotFound != null || timePeriodExists != null}">
+    <div class="messageContainer" th:if="${success != null || nameEmpty != null || uniIdEmpty != null || emailEmpty != null || passwordEmpty != null || courseNameEmpty != null || courseIdEmpty != null || facultyEmpty != null || courseNotFound != null || timePeriodExists != null || AssigningFailed != null}">
         <div class="message">
             <div class="exitButton"><img draggable="false" th:src="@{/images/closeIcon.png}"/></div>
             <h2 class="messageTitle text" th:text="${success != null  ? 'Operation succeeded.' : 'Operation failed.'}"
             >
             </h2>
-            <div class="messageContent text" th:text="${success != null ? 'The Operation has been completed successfully.' : (courseNameEmpty != null ? 'Course name can not be empty.' : (courseIdEmpty != null ? 'Course code can not be empty.' : (facultyEmpty != null ? 'Faculty name can not be empty.' : (nameEmpty != null ? 'Name can not be empty.' : (uniIdEmpty != null ? 'University Id can not be empty.' : (emailEmpty != null ? 'Email can not be empty.' : (passwordEmpty != null ? 'Password can not be empty.' : (courseNotFound != null ? 'Course was not found.' : (timePeriodExists != null ? 'Time period already exists.' : '')))))))))}"></div>
+            <div class="messageContent text" th:text="${success != null ? 'The Operation has been completed successfully.' : (courseNameEmpty != null ? 'Course name can not be empty.' : (courseIdEmpty != null ? 'Course code can not be empty.' : (facultyEmpty != null ? 'Faculty name can not be empty.' : (nameEmpty != null ? 'Name can not be empty.' : (uniIdEmpty != null ? 'University Id can not be empty.' : (emailEmpty != null ? 'Email can not be empty.' : (passwordEmpty != null ? 'Password can not be empty.' : (courseNotFound != null ? 'Course was not found.' : (timePeriodExists != null ? 'Time period already exists.' : (AssigningFailed != null ? 'Can not assign a doctor to a section that he is already assigned to.' : ''))))))))))}"></div>
         </div>
     </div>
-    <div class="choices">
-        <a class="choice" th:href="@{/admin/showAddStudent}">Add a student</a>
-        <a class="choice" th:href="@{/admin/showAddDoctor}">Add a doctor</a>
-        <a class="choice" th:href="@{/admin/showCreateCourse}">Create a course</a>
-        <a class="choice" th:href="@{/admin/showCreateSection}">Create a section for a course</a>
-        <a class="choice" th:href="@{/admin/showAssignDoctor}">Assign a doctor to a section</a>
-        <a class="choice" th:href="@{/admin/showCreateTimePeriod}">Create a time period</a>
+    <div class="top-bar">
+        <form class="logout" method="POST" th:action="@{/logout}">
+            <button class="logoutButton">Logout</button>
+        </form>
+    </div>
+    <div class="container">
+        <div class="choices">
+            <div id="student-choices" class="choices-container">
+                <a class="choice" th:href="@{/admin/showAddStudent}">Add a student</a>
+            </div>
+            <div id="doctor-choices" class="choices-container">
+                <a class="choice" th:href="@{/admin/showAddDoctor}">Add a doctor</a>
+                <a class="choice" th:href="@{/admin/showAssignDoctor}">Assign a doctor to a section</a>
+            </div>
+            <div id="course-choices" class="choices-container">
+                <a class="choice" th:href="@{/admin/showCreateCourse}">Create a course</a>
+            </div>
+            <div id="section-choices"class="choices-container">
+                <a class="choice" th:href="@{/admin/showCreateSection}">Create a section for a course</a>
+            </div>
+            <div id="general-choices" class="choices-container">
+                <a class="choice" th:href="@{/admin/showCreateTimePeriod}">Create a time period</a>
+            </div>
+        </div>
     </div>
 <script th:src="@{/scripts/scriptAdmin/scriptAdminUI.js}"></script>
 </body>

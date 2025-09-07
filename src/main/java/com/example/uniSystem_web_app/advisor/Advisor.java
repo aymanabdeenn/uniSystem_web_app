@@ -41,4 +41,14 @@ public class Advisor {
         System.out.println(ex.getMessage());
     }
 
+    @ExceptionHandler(AnnouncementNotFoundException.class)
+    public void announcementNotFound(AnnouncementNotFoundException ex){
+        System.out.println(ex.getMessage());
+    }
+
+    @ExceptionHandler(AnnouncementFileNotFoundException.class)
+    public void announcementFileNotFound(AnnouncementFileNotFoundException ex){
+        System.out.println(ex.getMessage());
+    }
+
 }

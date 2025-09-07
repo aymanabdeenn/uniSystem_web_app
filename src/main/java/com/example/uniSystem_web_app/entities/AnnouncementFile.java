@@ -16,6 +16,8 @@ public class AnnouncementFile {
 
     private String title;
 
+    private String fileName;
+
     private String path;
 
     private String contentType;
@@ -54,6 +56,14 @@ public class AnnouncementFile {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public String getPath() {
