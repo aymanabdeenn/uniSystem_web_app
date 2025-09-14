@@ -1,5 +1,6 @@
 package com.example.uniSystem_web_app.services;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -11,7 +12,8 @@ import java.util.Map;
 @Service
 public class AIService {
 
-    private final String python_server_URL = "http://127.0.0.1:8000/chat";
+    @Value("${python_server_URL}")
+    private String python_server_URL;
 
     RestTemplate restTemplate = new RestTemplate();
 

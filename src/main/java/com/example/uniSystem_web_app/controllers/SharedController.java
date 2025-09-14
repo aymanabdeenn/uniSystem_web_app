@@ -9,9 +9,9 @@ import com.example.uniSystem_web_app.security.CustomUserDetails;
 import com.example.uniSystem_web_app.services.AnnouncementFileService;
 import com.example.uniSystem_web_app.services.AnnouncementService;
 import com.example.uniSystem_web_app.services.SectionService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,15 +26,16 @@ import org.springframework.web.util.UriUtils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 
 
 @Controller
 @RequestMapping("/shared")
 public class SharedController {
+
+    @Value("${files.upload.path}")
+    String filesUploadPath;
 
     private final AnnouncementService announcementService;
     private final AnnouncementFileService announcementFileService;
@@ -134,10 +135,12 @@ public class SharedController {
     ){
       Announcement announcement = announcementService.createNewAnnouncement(title , content , sectionId , doctorId);
 
+
+
       if(files != null){
            for(MultipartFile file : files){
               try{
-                  String uploadDir = "C:/Users/ayman/Desktop/myUploads/section_" + sectionId + "/announcement_" + announcement.getId() + "/";
+                  String uploadDir = filesUploadPath + sectionId + "/announcement_" + announcement.getId() + "/";
                   new File(uploadDir).mkdirs();
 
                   String filePath = uploadDir + System.currentTimeMillis() + "_" + file.getOriginalFilename();
